@@ -5,7 +5,7 @@ pipeline {
         IMAGE_NAME = 'osegbu/pychat-frontend-service'
         SSH_USER = 'ec2-user'
         SSH_HOST = 'ec2-100-26-193-126.compute-1.amazonaws.com'
-        DEPLOYMENT_FILE_PATH = '~/frontend-service-deployment.yaml'
+        DEPLOYMENT_FILE_PATH = '~/my-nextjs-app.yaml'
     }
 
     stages {
