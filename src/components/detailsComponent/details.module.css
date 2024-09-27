@@ -1,0 +1,125 @@
+.container {
+  width: 25%;
+}
+.sharedImages {
+  padding: 8px;
+}
+.sharedImages span {
+  display: block;
+  margin-bottom: 16px;
+  /* color: var(--textSoft); */
+}
+.chatImageWrapper {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 8px;
+}
+.chatImageWrapper .eachImage {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100px;
+}
+
+.userDetails {
+  text-align: center;
+  padding: 16px;
+  border-bottom: 1px solid #464545;
+}
+.userName {
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+.userStatus {
+  color: var(--textSoft);
+  font-size: 0.9rem;
+}
+.backBtn {
+  display: none;
+}
+
+.userDetails .userNameLoader,
+.userDetails .userStatusLoader,
+.userDetails .imageEl {
+  border-radius: 8px;
+  margin: auto;
+  margin-bottom: 8px;
+  background-color: gray;
+  position: relative;
+  overflow: hidden;
+}
+
+.userDetails .userNameLoader {
+  width: 100px;
+  height: 13px;
+  margin-top: 16px;
+}
+
+.userDetails .userStatusLoader {
+  width: 250px;
+  max-width: 100%;
+  height: 13px;
+  margin-top: 8px;
+}
+
+.userDetails .profileImage {
+  overflow: hidden;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: auto;
+}
+.userDetails .profileImage img {
+  width: 100%;
+  height: 100%;
+}
+.userDetails .imageEl {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+.userDetails .userNameLoader::before,
+.userDetails .userStatusLoader::before,
+.userDetails .imageEl::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    border: none;
+    display: none;
+  }
+  .container.active {
+    display: block;
+  }
+  .backBtn {
+    display: block;
+    margin-top: 16px;
+    margin-left: 8px;
+  }
+}

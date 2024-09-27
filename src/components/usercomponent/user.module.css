@@ -1,0 +1,181 @@
+.container {
+  width: 25%;
+  overflow: hidden;
+  border-right: 1px solid #464545;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+.noUsers {
+  text-align: center;
+  color: whitesmoke;
+  font-style: italic;
+  margin-top: 16px;
+}
+.loader {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 17px 16px;
+  width: 100%;
+  overflow: hidden;
+  border-bottom: 1px solid #464545;
+}
+.loader:last-child {
+  border-bottom: none;
+}
+.searchEl {
+  padding: 16px 16px;
+  border-bottom: 1px solid #464545;
+}
+.searchEl input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  font-size: 1rem;
+}
+.userList,
+.userListLoader {
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+}
+.userList:hover {
+  overflow-y: auto;
+}
+.eachUser {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #464545;
+}
+.eachUser:last-child {
+  border-bottom: none;
+}
+.eachUser img {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.eachUser .userName {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+}
+.lastMsg {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--textSoft);
+  display: block;
+  font-size: 0.9rem;
+}
+.imageContainer {
+  width: 38px;
+  height: 38px;
+  position: relative;
+}
+.onlineIndicator {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background-color: green;
+  border: 1px solid white;
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+}
+.offlineIndicator {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background-color: #808088;
+  border: 1px solid white;
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+}
+.imageCover {
+  width: 160px;
+  height: 160px;
+  margin: auto;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.imageLoader,
+.aboutLoader,
+.userNameLoader {
+  background-color: gray;
+  position: relative;
+  overflow: hidden;
+}
+.imageLoader {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.flexRight {
+  flex: 1;
+  overflow: auto;
+}
+.aboutLoader,
+.userNameLoader {
+  width: 100px;
+  height: 12px;
+  border-radius: 8px;
+}
+
+.aboutLoader {
+  margin-top: 8px;
+  width: 300px;
+  max-width: 100%;
+  flex: 1;
+}
+
+.imageLoader::before,
+.aboutLoader::before,
+.userNameLoader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  50% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    border: none;
+  }
+  .collapse {
+    display: none;
+  }
+}

@@ -1,0 +1,46 @@
+.formContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+  padding: 16px;
+  width: 420px;
+  font-size: 0.9rem;
+}
+.formContainer input {
+  width: 100%;
+  display: block;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  padding: 8px;
+  margin: 8px 0px;
+  margin-bottom: 16px;
+}
+.formContainer button {
+  width: 100%;
+  background-color: blue;
+  color: white;
+  padding: 12px 8px;
+  border-radius: 4px;
+  border: none;
+  transition: all 0.5sec ease-in-out;
+}
+.formContainer button:hover {
+  background-color: darkblue;
+  cursor: pointer;
+  transition: all 0.5sec ease-in-out;
+}
+.formContainer button:active {
+  outline: 0.4rem solid rgba(13, 110, 253, 0.25);
+  transition: all 0.5sec ease-in-out;
+}
+.message {
+  padding: 8px;
+  text-align: center;
+  color: white;
+}
