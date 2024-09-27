@@ -23,6 +23,7 @@ const UserDetails = ({ openDetails }) => {
       <Image
         className={styles.backBtn}
         src={backArrow}
+        alt="Back button"
         height={24}
         width={24}
         onClick={closeChat}

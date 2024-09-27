@@ -71,7 +71,14 @@ const ChatInputField = ({
       sendMessage({ jsonMessage });
       setMessage("");
     }
-  }, [message, fileData, session, receiver_id, sendMessage]);
+  }, [
+    message,
+    fileData,
+    session.user.id,
+    receiver_id,
+    setIsImageOpen,
+    sendMessage,
+  ]);
 
   const handleTyping = useCallback(
     debounce(() => {
@@ -82,7 +89,7 @@ const ChatInputField = ({
       });
       sendMessage({ jsonMessage });
     }, 300),
-    [session, receiver_id, sendMessage]
+    [session?.user?.id, receiver_id, sendMessage]
   );
 
   const handleBlur = useCallback(() => {
@@ -92,7 +99,7 @@ const ChatInputField = ({
       receiver_id,
     });
     sendMessage({ jsonMessage });
-  }, [session, receiver_id, sendMessage]);
+  }, [session?.user?.id, receiver_id, sendMessage]);
 
   const handleImageUpload = useCallback(() => {
     const data = file.current.files[0];

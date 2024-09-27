@@ -34,7 +34,7 @@ const Uploader = () => {
       setLoading(false);
       inputEl.current.value = "";
     }
-  });
+  }, [notify]);
 
   return (
     <div className={`${styles.coverDiv} ${loading && styles.active}`}>

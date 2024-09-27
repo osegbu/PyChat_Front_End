@@ -18,7 +18,7 @@ const Search = () => {
 
   const handleSearch = useCallback(
     debounce((value) => search(value), 300),
-    [search]
+    [debounce, search]
   );
 
   const handleInput = useCallback(

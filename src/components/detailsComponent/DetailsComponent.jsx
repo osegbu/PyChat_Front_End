@@ -4,7 +4,6 @@ import { memo, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
-import imageLoader from "@/icons/spinner-2.gif";
 
 const DetailsComponent = ({ isOpen, openDetails }) => {
   const { data: session } = useSession();
