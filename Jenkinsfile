@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'osegbu/pychat-frontend-service'
+        IMAGE_NAME = 'osegbu/pychat-nextjs-app'
         SSH_USER = 'ec2-user'
         SSH_HOST = 'ec2-100-26-193-126.compute-1.amazonaws.com'
         DEPLOYMENT_FILE_PATH = '~/my-nextjs-app.yaml'
