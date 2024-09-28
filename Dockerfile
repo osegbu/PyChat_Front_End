@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm set timeout=60000 && npm ci
+ENV NPM_CONFIG_FETCH_TIMEOUT=60000
+
+RUN npm ci
 
 COPY . .
 
