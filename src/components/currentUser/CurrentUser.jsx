@@ -7,7 +7,7 @@ import menu from "@/icons/menu.png";
 import backArrow from "@/icons/arrow.png";
 
 const CurrentUser = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_PROFILE_IMAGE;
+  const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
 
   const { data: session } = useSession();
   const [isProfileOpen, setIsProfileOpen] = useState(false);

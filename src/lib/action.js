@@ -4,8 +4,8 @@ import { signIn, signOut, auth } from "@/lib/auth";
 import { generateToken } from "./accessToken";
 import { makeApiCall } from "./makeApiCall ";
 
-const BASE_URL = process.env.API_BASE_URL;
-const BASE_URL_2 = process.env.API_BASE_URL_2;
+const BASE_URL = process.env.NEXT_PUBLIC_URL;
+const BASE_URL_2 = process.env.NEXT_PUBLIC_URL_2;
 
 const handleSignIn = async (credentials) => {
   await signIn("credentials", {

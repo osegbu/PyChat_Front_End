@@ -31,7 +31,7 @@ const initialState = {
   typing: {},
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_PROFILE_IMAGE;
+const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
 
 const reducer = (state, action) => {
   switch (action.type) {
