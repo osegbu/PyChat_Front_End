@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'docker-agent' }
+    agent any
 
     environment {
         IMAGE_NAME = 'osegbu/pychat-nextjs-app'
