@@ -24,12 +24,12 @@ jobs:
       # Step 3: Build the Docker image with the "latest" tag
       - name: Build Docker image
         run: |
-          docker build -t osegbu/pychat-chat-service:latest .
+          docker build -t osegbu/pychat-nextjs:latest .
 
       # Step 4: Push the Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
-          docker push osegbu/pychat-chat-service:latest
+          docker push osegbu/pychat-nextjs:latest
 
   deploy:
     runs-on: ubuntu-latest
