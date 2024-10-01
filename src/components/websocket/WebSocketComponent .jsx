@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useRef, useState, useCallback, useEffect } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_WS;
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL;
 
 const useWebSocket = (onStatusUpdate, onTyping) => {
   const { data: session } = useSession();
@@ -104,7 +104,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
 
     setConnectionStatus("Connecting...");
 
-    const socket = new WebSocket(`ws://${BASE_URL}/ws/${session.user.id}`);
+    const socket = new WebSocket(`ws://${WS_URL}/ws/${session.user.id}`);
     socketRef.current = socket;
 
     socket.onopen = () => {

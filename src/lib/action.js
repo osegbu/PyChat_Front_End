@@ -4,8 +4,8 @@ import { signIn, signOut, auth } from "@/lib/auth";
 import { generateToken } from "./accessToken";
 import { makeApiCall } from "./makeApiCall ";
 
-const BASE_URL = process.env.NEXT_PUBLIC_URL;
-const BASE_URL_2 = process.env.NEXT_PUBLIC_URL_2;
+const USER_URL = process.env.NEXT_PUBLIC_USER_URL;
+const CHAT_URL = process.env.NEXT_PUBLIC_CHAT_URL;
 
 const handleSignIn = async (credentials) => {
   await signIn("credentials", {
@@ -28,7 +28,7 @@ const handleApiCall = async (url, method, body, headers = {}) => {
 
 export const signup = async (formData) => {
   const { username, password, confirm_password } = Object.fromEntries(formData);
-  const url = `${BASE_URL}/signup`;
+  const url = `${USER_URL}/signup`;
 
   try {
     const credentials = await handleApiCall(url, "POST", {
@@ -45,7 +45,7 @@ export const signup = async (formData) => {
 
 export const login = async (formData) => {
   const { username, password } = formData;
-  const url = `${BASE_URL}/login`;
+  const url = `${USER_URL}/login`;
 
   try {
     const credentials = await handleApiCall(url, "POST", {
@@ -64,7 +64,7 @@ export const updateUsername = async (formData) => {
   const session = await auth();
   const id = session.user.id;
 
-  const url = `${BASE_URL}/update_username`;
+  const url = `${USER_URL}/update_username`;
 
   try {
     const credentials = await handleApiCall(
@@ -93,7 +93,7 @@ export const updateAbout = async (formData) => {
   const session = await auth();
   const id = session.user.id;
 
-  const url = `${BASE_URL}/update_about`;
+  const url = `${USER_URL}/update_about`;
   try {
     const credentials = await handleApiCall(
       url,
@@ -116,7 +116,7 @@ export const updateAbout = async (formData) => {
 export const uploadProfileImage = async (formData) => {
   const session = await auth();
   const id = session.user.id;
-  const url = `${BASE_URL}/upload_profile_image/${id}`;
+  const url = `${USER_URL}/upload_profile_image/${id}`;
   formData.append("previousImage", session.user.profileimage);
 
   try {
@@ -134,7 +134,7 @@ export const uploadProfileImage = async (formData) => {
 };
 
 export const fetchUser = async () => {
-  const url = `${BASE_URL}/get_all_users`;
+  const url = `${USER_URL}/get_all_users`;
 
   try {
     const users = await handleApiCall(url, "POST");
@@ -147,7 +147,7 @@ export const fetchUser = async () => {
 export const fetchChats = async () => {
   const session = await auth();
   const id = session.user.id;
-  const url = `${BASE_URL_2}/load_chat/${id}`;
+  const url = `${CHAT_URL}/load_chat/${id}`;
 
   try {
     const chats = await handleApiCall(url, "POST", "", {
@@ -162,7 +162,7 @@ export const fetchChats = async () => {
 export const handleLogout = async () => {
   const session = await auth();
   const id = session.user.id;
-  const url = `${BASE_URL}/logout/${id}`;
+  const url = `${USER_URL}/logout/${id}`;
 
   try {
     await handleApiCall(url, "POST");
