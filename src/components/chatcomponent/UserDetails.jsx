@@ -32,7 +32,7 @@ const UserDetails = ({ openDetails }) => {
       />
       <div>
         <div className={styles.userName}>{user.username}</div>
-        {typing?.typing && typing.user_id === userID ? (
+        {typing?.typing && typing.user_id == userID ? (
           <div className={styles.typingIndicator}>Typing...</div>
         ) : (
           <div
