@@ -194,7 +194,7 @@ const HomeComponent = () => {
       typing: state.typing,
       notify,
     }),
-    [state.typing]
+    [notify, state.typing]
   );
 
   return (

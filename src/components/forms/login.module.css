@@ -8,6 +8,7 @@
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
   padding: 16px;
   width: 420px;
+  max-width: 95%;
   font-size: 0.9rem;
 }
 .formContainer input {
