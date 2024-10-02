@@ -7,7 +7,7 @@ import Uploader from "./Uploader";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const EditProfile = () => {
-  const BASE_URL = process.env.NEXT_PUBLIC_PROFILE_IMAGE;
+  const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
 
   const { data: session, status } = useSession();
 
