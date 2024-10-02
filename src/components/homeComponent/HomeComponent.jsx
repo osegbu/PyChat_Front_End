@@ -114,12 +114,18 @@ const HomeComponent = () => {
     if (users.success) {
       const userList = users.users.filter((user) => user.id != session.user.id);
       dispatch({ type: "UPDATE_USER_LIST", users: userList });
+      console.log("Done getting users");
+    } else {
+      console.log(users.message);
     }
 
     setLoadingStage("Fetching chats...");
     const chats = await fetchChats();
     if (chats.success) {
       updateMessages({ chats: chats.chats });
+      console.log("Done getting users");
+    } else {
+      console.log(users.message);
     }
 
     if (chats.success && users.success) hasFetchedUsers.current = true;
