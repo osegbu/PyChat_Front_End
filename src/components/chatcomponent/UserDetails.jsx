@@ -1,16 +1,11 @@
 import styles from "./chat.module.css";
 import Image from "next/image";
-import {
-  useChatContext,
-  useHomeContext,
-  useNotification,
-} from "../homeComponent/HomeComponent";
+import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { memo, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 
 const UserDetails = ({ openDetails }) => {
-  const { userID } = useChatContext();
-  const { typing } = useNotification();
+  const { userID, typing } = useChatContext();
   const { Users, closeChat } = useHomeContext();
 
   const user = useMemo(

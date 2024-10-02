@@ -189,20 +189,12 @@ const HomeComponent = () => {
     setTimeout(() => setNotification(null), 3000);
   }, []);
 
-  const notificationValue = useMemo(
-    () => ({
-      typing: state.typing,
-      notify,
-    }),
-    [notify, state.typing]
-  );
-
   return (
     <>
       {hasFetchedUsers.current ? (
         <HomeContext.Provider value={homeContextValue}>
           <ChatContext.Provider value={chatContextValue}>
-            <NotificationContext.Provider value={notificationValue}>
+            <NotificationContext.Provider value={notify}>
               <div className="mainContainer">
                 <UserComponent />
                 <LoadChat />
