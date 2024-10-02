@@ -5,10 +5,21 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "http://100.26.193.126:30067",
+        hostname: "100.26.193.126",
+        port: "30067",
+      },
+      {
+        protocol: "http",
+        hostname: "100.26.193.126",
+        port: "30068",
+      },
+      {
+        protocol: "http",
+        hostname: "100.26.193.126",
+        port: "30069",
       },
     ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

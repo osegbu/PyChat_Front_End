@@ -5,6 +5,7 @@ import { useState, useCallback, useRef, useEffect, memo } from "react";
 import { useChatContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
 import debounce from "lodash/debounce";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatInputField = ({
   receiver_id,
@@ -26,7 +27,7 @@ const ChatInputField = ({
   const handleSendMessage = useCallback(async () => {
     if (!message.trim() && !fileData) return;
 
-    const uuid = crypto.randomUUID();
+    const uuid = uuidv4();
     const timestamp = new Date().toISOString();
 
     let base64File = null;
