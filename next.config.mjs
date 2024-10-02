@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "my-nextjs-app-service",
+        hostname: "http://100.26.193.126:30067",
       },
     ],
   },
