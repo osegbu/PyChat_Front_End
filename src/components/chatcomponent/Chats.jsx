@@ -8,6 +8,7 @@ const Chats = () => {
   const endRef = useRef();
   const { data: session } = useSession();
   const { userID, messages } = useChatContext();
+  const BASE_URL = process.env.NEXT_PUBLIC_CHAT_URL;
 
   const formatTime = (timestamp) => {
     return new Date(timestamp).toLocaleTimeString([], {
@@ -104,7 +105,7 @@ const Chats = () => {
                       placeholder="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAABAklEQVR4nO3RQREAIRDAsOP8C1tX8EYBfSQKOtM1M/sj438dwM2QGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDg4LBB+8RC3tAAAAAElFTkSuQmCC"
                       src={
                         message.id
-                          ? `http://localhost:8001/static/${message.image}`
+                          ? `${BASE_URL}/static/${message.image}`
                           : message.image
                       }
                       alt="Chat Image"

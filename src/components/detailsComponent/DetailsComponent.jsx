@@ -9,6 +9,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
   const { data: session } = useSession();
   const { userID, messages } = useChatContext();
   const { Users } = useHomeContext();
+  const BASE_URL = process.env.NEXT_PUBLIC_CHAT_URL;
 
   const user = useMemo(() => {
     return Users.find((user) => user.id === userID);
@@ -59,7 +60,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
                   placeholder="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAABAklEQVR4nO3RQREAIRDAsOP8C1tX8EYBfSQKOtM1M/sj438dwM2QGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDIkxJMaQGENiDg4LBB+8RC3tAAAAAElFTkSuQmCC"
                   src={
                     message.id
-                      ? `http://localhost:8001/static/${message.image}`
+                      ? `${BASE_URL}/static/${message.image}`
                       : message.image
                   }
                   alt="Chat Image"
