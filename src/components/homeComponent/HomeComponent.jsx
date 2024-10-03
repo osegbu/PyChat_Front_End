@@ -13,13 +13,11 @@ import {
 } from "react";
 import { fetchChats, fetchUser } from "@/lib/action";
 import UserComponent from "../usercomponent/UserComponent";
-import Notification from "../notification/Notification";
 import { useSession } from "next-auth/react";
 import useWebSocket from "../websocket/WebSocketComponent ";
 
 const HomeContext = createContext();
 const ChatContext = createContext();
-const NotificationContext = createContext();
 
 const LoadChat = dynamic(() => import("@/components/chatanddetails/LoadChat"));
 
@@ -73,9 +71,7 @@ const reducer = (state, action) => {
 
 const HomeComponent = () => {
   const { data: session } = useSession();
-  const [notification, setNotification] = useState(null);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [showStatus, setShowStatus] = useState(false);
   const [loadingStage, setLoadingStage] = useState("");
 
   const onStatusUpdate = useCallback((message) => {
@@ -101,7 +97,6 @@ const HomeComponent = () => {
     messages,
     connectionStatus,
     flushMessageQueue,
-    onlineStatus,
   } = useWebSocket(onStatusUpdate, onTyping);
 
   const hasFetchedUsers = useRef(false);
@@ -141,12 +136,7 @@ const HomeComponent = () => {
 
   useEffect(() => {
     if (connectionStatus === "Connected") {
-      setShowStatus(true);
       flushMessageQueue();
-      const timer = setTimeout(() => {
-        setShowStatus(false);
-      }, 5000);
-      return () => clearTimeout(timer);
     }
   }, [connectionStatus]);
 
@@ -183,37 +173,15 @@ const HomeComponent = () => {
     [state.userID, sendMessage, messages, state.typing]
   );
 
-  const notify = useCallback((message) => {
-    setNotification(null);
-    setNotification(message);
-    setTimeout(() => setNotification(null), 3000);
-  }, []);
-
   return (
     <>
       {hasFetchedUsers.current ? (
         <HomeContext.Provider value={homeContextValue}>
           <ChatContext.Provider value={chatContextValue}>
-            <NotificationContext.Provider value={notify}>
-              <div className="mainContainer">
-                <UserComponent />
-                <LoadChat />
-                {notification && <Notification message={notification} />}
-
-                {showStatus && onlineStatus != "Offline" && (
-                  <div className="connectedStatus">{connectionStatus}</div>
-                )}
-
-                {onlineStatus === "Offline" && (
-                  <div className="connectedStatus">Waiting for network...</div>
-                )}
-
-                {connectionStatus != "Connected" &&
-                  onlineStatus != "Offline" && (
-                    <div className="connectedStatus">{connectionStatus}</div>
-                  )}
-              </div>
-            </NotificationContext.Provider>
+            <div className="mainContainer">
+              <UserComponent />
+              <LoadChat />
+            </div>
           </ChatContext.Provider>
         </HomeContext.Provider>
       ) : (
@@ -225,6 +193,5 @@ const HomeComponent = () => {
 
 export const useHomeContext = () => useContext(HomeContext);
 export const useChatContext = () => useContext(ChatContext);
-export const useNotification = () => useContext(NotificationContext);
 
 export default memo(HomeComponent);

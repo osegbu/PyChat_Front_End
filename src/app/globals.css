@@ -14,30 +14,19 @@
   font-family: var(--font-mono);
 }
 body {
-  background-image: url("/background.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: rgba(0, 0, 0, 1);
 }
 
 .mainContainer {
   width: 90%;
   height: 90%;
   background-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 6px;
   display: flex;
-}
-.connectedStatus {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  z-index: 2;
 }
 ::-webkit-scrollbar {
   width: 6px;
@@ -57,7 +46,6 @@ body {
 
 @media (max-width: 767px) {
   .mainContainer {
-    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 0px;
   }
 }

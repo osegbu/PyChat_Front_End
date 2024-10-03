@@ -7,7 +7,6 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
   const { data: session } = useSession();
   const [messages, setMessages] = useState([]);
   const [connectionStatus, setConnectionStatus] = useState("Disconnected");
-  const [onlineStatus, setOnlineStatus] = useState(null);
   const socketRef = useRef(null);
   const reconnectIntervalRef = useRef(null);
   const heartbeatRef = useRef(null);
@@ -176,27 +175,6 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
     };
   }, [session, flushMessageQueue, startHeartbeat, stopHeartbeat]);
 
-  useEffect(() => {
-    const handleOnline = () => {
-      console.log("Internet is back. Reconnecting...");
-      setOnlineStatus("Online");
-      connect();
-    };
-
-    const handleOffline = () => {
-      console.log("Internet connection lost.");
-      setOnlineStatus("Offline");
-    };
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, [connect]);
-
   return {
     connect,
     sendMessage,
@@ -204,7 +182,6 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
     flushMessageQueue,
     messages,
     connectionStatus,
-    onlineStatus,
   };
 };
 

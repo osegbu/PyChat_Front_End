@@ -48,7 +48,6 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
           />
         </div>
         <div className={styles.userName}>{user.username}</div>
-        <div className={styles.userStatus}>{user.about}</div>
       </div>
       {filteredChat != "" && (
         <div className={styles.sharedImages}>
@@ -65,7 +64,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
                   }
                   alt="Chat Image"
                   fill
-                  sizes="100px"
+                  sizes="150px"
                   quality={50}
                   objectFit="cover"
                 />

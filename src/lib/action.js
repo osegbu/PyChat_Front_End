@@ -12,7 +12,6 @@ const handleSignIn = async (credentials) => {
     redirect: false,
     id: credentials.id,
     username: credentials.username,
-    about: credentials.about,
     profileimage: credentials.profileimage,
   });
 };
@@ -56,80 +55,6 @@ export const login = async (formData) => {
     return { success: true };
   } catch (error) {
     return { success: false, message: `Login error: ${error.message}` };
-  }
-};
-
-export const updateUsername = async (formData) => {
-  const { username } = formData;
-  const session = await auth();
-  const id = session.user.id;
-
-  const url = `${USER_URL}/update_username`;
-
-  try {
-    const credentials = await handleApiCall(
-      url,
-      "POST",
-      { username, id },
-      {
-        Authorization: `Bearer ${generateToken(session.user)}`,
-      }
-    );
-    return {
-      success: true,
-      message: "Username updated successfully!",
-      data: credentials,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: `Update username error: ${error.message}`,
-    };
-  }
-};
-
-export const updateAbout = async (formData) => {
-  const { about } = formData;
-  const session = await auth();
-  const id = session.user.id;
-
-  const url = `${USER_URL}/update_about`;
-  try {
-    const credentials = await handleApiCall(
-      url,
-      "POST",
-      { about, id },
-      {
-        Authorization: `Bearer ${generateToken(session.user)}`,
-      }
-    );
-    return {
-      success: true,
-      message: "About updated successfully!!",
-      data: credentials,
-    };
-  } catch (error) {
-    return { success: false, message: `Update about error: ${error.message}` };
-  }
-};
-
-export const uploadProfileImage = async (formData) => {
-  const session = await auth();
-  const id = session.user.id;
-  const url = `${USER_URL}/upload_profile_image/${id}`;
-  formData.append("previousImage", session.user.profileimage);
-
-  try {
-    const credentials = await handleApiCall(url, "POST", formData, {
-      Authorization: `Bearer ${generateToken(session.user)}`,
-    });
-    return {
-      success: true,
-      message: "Profile image uploaded successfully!",
-      data: credentials,
-    };
-  } catch (error) {
-    return { success: false, message: `Upload error: ${error.message}` };
   }
 };
 
