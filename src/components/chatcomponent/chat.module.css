@@ -58,7 +58,7 @@
   background-color: #134d37;
   width: fit-content;
   height: fit-content;
-  max-width: 60%;
+  max-width: 85%;
   margin-left: auto;
   margin-right: 0;
   margin-bottom: 8px;
@@ -69,7 +69,7 @@
 .receiverChat {
   width: fit-content;
   height: fit-content;
-  max-width: 60%;
+  max-width: 85%;
   margin-left: 0;
   margin-right: auto;
   margin-bottom: 8px;
