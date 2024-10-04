@@ -8,9 +8,7 @@ const Form = () => {
 
   return isLogin ? (
     <SignIn>
-      <div
-        style={{ textAlign: "center", marginTop: "16px", fontWeight: "500" }}
-      >
+      <div style={{ textAlign: "center", marginTop: "16px" }}>
         Already have an account?{" "}
         <span
           style={{ color: "yellow", cursor: "pointer" }}
@@ -22,9 +20,7 @@ const Form = () => {
     </SignIn>
   ) : (
     <SignUp>
-      <div
-        style={{ textAlign: "center", marginTop: "16px", fontWeight: "500" }}
-      >
+      <div style={{ textAlign: "center", marginTop: "16px" }}>
         Already have an account?{" "}
         <span
           style={{ color: "yellow", cursor: "pointer" }}

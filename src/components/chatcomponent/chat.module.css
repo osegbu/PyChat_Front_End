@@ -135,7 +135,7 @@
 }
 .onlineStatus {
   color: var(--textSoft);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 .online {
   color: rgb(0, 255, 0) !important;

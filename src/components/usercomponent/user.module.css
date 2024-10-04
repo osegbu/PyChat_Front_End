@@ -75,7 +75,7 @@
   text-overflow: ellipsis;
   color: var(--textSoft);
   display: block;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 .imageContainer {
   width: 38px;

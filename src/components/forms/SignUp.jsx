@@ -71,41 +71,44 @@ export const SignUp = ({ children }) => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <label>
-        Your Name:
-        <input
-          name="username"
-          type="text"
-          placeholder="First & Last Name"
-          value={formData.username}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Confirm Password:
-        <input
-          name="confirm_password"
-          type="password"
-          placeholder="Enter the password above"
-          value={formData.confirm_password}
-          onChange={handleChange}
-        />
-      </label>
-      {message && <p className={styles.message}>{message}</p>}
-      <button type="submit" disabled={loading}>
-        {loading ? "Signing Up..." : "Sign Up"}
-      </button>
-      {children}
+      <div className={styles.formTitle}>PyChat</div>
+      <div className={styles.formBody}>
+        <label>
+          Your Name:
+          <input
+            name="username"
+            type="text"
+            placeholder="First & Last Name"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Confirm Password:
+          <input
+            name="confirm_password"
+            type="password"
+            placeholder="Enter the password above"
+            value={formData.confirm_password}
+            onChange={handleChange}
+          />
+        </label>
+        {message && <p className={styles.message}>{message}</p>}
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
+        {children}
+      </div>
     </form>
   );
 };
