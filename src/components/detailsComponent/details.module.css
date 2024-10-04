@@ -1,8 +1,11 @@
 .container {
   width: 25%;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 .sharedImages {
   padding: 8px;
+  overflow-y: auto;
 }
 .sharedImages span {
   display: block;
@@ -12,7 +15,6 @@
   display: grid;
   grid-template-columns: auto auto auto;
   gap: 8px;
-  overflow-y: auto;
 }
 .chatImageWrapper .eachImage {
   position: relative;
