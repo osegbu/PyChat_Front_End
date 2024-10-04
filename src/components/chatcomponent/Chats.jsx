@@ -112,7 +112,7 @@ const Chats = () => {
                       width={200}
                       height={200}
                       objectFit="contain"
-                      sizes="(max-width: 640px) 150px, (max-width: 1024px) 250px, 350px"
+                      sizes="(max-width: 640px) 200px, (max-width: 1024px) 250px, 350px"
                     />
                   </div>
                 )}
