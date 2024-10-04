@@ -278,7 +278,9 @@
   .chatUserDetails .backBtn {
     display: block;
   }
+}
 
+@media (max-width: 640px) {
   .receiverChat,
   .senderChat {
     max-width: 85%;
