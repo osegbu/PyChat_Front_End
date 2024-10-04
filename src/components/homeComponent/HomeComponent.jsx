@@ -118,7 +118,7 @@ const HomeComponent = () => {
     const chats = await fetchChats();
     if (chats.success) {
       updateMessages({ chats: chats.chats });
-      console.log("Done getting users");
+      console.log("Done getting chats");
     } else {
       console.log(users.message);
     }
