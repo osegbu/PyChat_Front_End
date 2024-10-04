@@ -79,15 +79,11 @@
   background-color: #1f2c34;
   overflow: hidden;
 }
-.chatMessage {
-  display: inline;
-}
 .chatTime {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 13px;
-  float: right;
-  margin-left: 8px;
-  line-height: 24px;
+  color: var(--textSoft);
+  font-size: 12px;
+  width: 100%;
+  text-align: right;
 }
 .chatImageWrapper {
   width: 600px;

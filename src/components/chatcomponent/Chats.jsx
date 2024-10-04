@@ -118,16 +118,16 @@ const Chats = () => {
                 )}
 
                 {message.message && (
-                  <div
+                  <p
                     className={styles.chatMessage}
                     dangerouslySetInnerHTML={{
                       __html: message.message.replace(/\n/g, "<br />"),
                     }}
                   />
                 )}
-                <span className={styles.chatTime}>
+                <div className={styles.chatTime}>
                   {formatTime(message.timestamp)} {message.status}
-                </span>
+                </div>
               </div>
             ))}
           </div>
