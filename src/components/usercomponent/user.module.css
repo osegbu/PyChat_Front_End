@@ -1,7 +1,7 @@
 .container {
   width: 25%;
   overflow: hidden;
-  border-right: 1px solid #252525;
+  border-right: 1px solid #414141;
   position: relative;
   box-sizing: border-box;
   display: flex;
@@ -17,10 +17,10 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  padding: 17px 16px;
+  padding: 18px;
   width: 100%;
   overflow: hidden;
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid #414141;
 }
 .loader:last-child {
   border-bottom: none;
@@ -28,7 +28,7 @@
 .searchEl {
   padding: 8px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid #414141;
 }
 .searchEl input {
   border: none;
@@ -54,7 +54,7 @@
   gap: 16px;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid #414141;
 }
 .eachUser:last-child {
   border-bottom: none;
@@ -76,6 +76,7 @@
   color: var(--textSoft);
   display: block;
   font-size: 0.85rem;
+  margin-top: 2px;
 }
 .imageContainer {
   width: 38px;
@@ -136,7 +137,7 @@
 }
 
 .aboutLoader {
-  margin-top: 8px;
+  margin-top: 11px;
   width: 300px;
   max-width: 100%;
   flex: 1;

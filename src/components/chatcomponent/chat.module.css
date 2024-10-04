@@ -1,6 +1,6 @@
 .container {
   width: 50%;
-  border-right: 1px solid #252525;
+  border-right: 1px solid #414141;
   display: grid;
   grid-template-rows: auto 1fr auto;
   position: relative;
@@ -19,7 +19,7 @@
   top: 0;
   left: 0;
   padding-bottom: 80px;
-  background-color: #252525;
+  background-color: #414141;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,7 +117,7 @@
   gap: 16px;
   align-items: center;
   padding: 8px 16px;
-  border-bottom: 1px solid #252525;
+  border-bottom: 1px solid #414141;
 }
 .chatUserDetails .backBtn {
   display: none;
