@@ -58,7 +58,7 @@
   background-color: #134d37;
   width: fit-content;
   height: fit-content;
-  max-width: 85%;
+  max-width: 60%;
   margin-left: auto;
   margin-right: 0;
   margin-bottom: 8px;
@@ -69,7 +69,7 @@
 .receiverChat {
   width: fit-content;
   height: fit-content;
-  max-width: 85%;
+  max-width: 60%;
   margin-left: 0;
   margin-right: auto;
   margin-bottom: 8px;
@@ -277,5 +277,10 @@
   }
   .chatUserDetails .backBtn {
     display: block;
+  }
+
+  .receiverChat,
+  .senderChat {
+    max-width: 85%;
   }
 }
