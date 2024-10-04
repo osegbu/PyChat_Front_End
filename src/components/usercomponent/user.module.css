@@ -27,6 +27,7 @@
 }
 .searchEl {
   padding: 8px;
+  padding-bottom: 12px;
   border-bottom: 1px solid #252525;
 }
 .searchEl input {
@@ -37,6 +38,7 @@
   border-radius: 40px;
   background-color: rgba(0, 0, 0, 0.6);
   font-size: 1rem;
+  outline: 2px solid rgba(255, 255, 255, 0.2);
 }
 .userList,
 .userListLoader {

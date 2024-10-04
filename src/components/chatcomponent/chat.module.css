@@ -153,6 +153,7 @@
   grid-template-columns: auto 1fr auto;
   align-items: end;
   outline: 2px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 .iconButton {
   background-color: transparent;
