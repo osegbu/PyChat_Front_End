@@ -18,7 +18,11 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
 
   const sendMessage = useCallback(
     (props) => {
-      if (socketRef.current && connectionStatus === "Connected") {
+      if (
+        socketRef.current &&
+        connectionStatus === "Connected" &&
+        navigator.onLine
+      ) {
         socketRef.current.send(props.jsonMessage);
       }
       const jsonMessage = JSON.parse(props.jsonMessage);
@@ -30,8 +34,9 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
 
       if (jsonMessage.type === "chat") {
         setMessages((prevMessages) => [...prevMessages, jsonMessage]);
-        setMessageQueue((prevQueue) => [...prevQueue, props.jsonMessage]);
       }
+
+      setMessageQueue((prevQueue) => [...prevQueue, props.jsonMessage]);
     },
     [connectionStatus]
   );
@@ -121,6 +126,13 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
 
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data);
+
+      if (message.type != "pong") {
+        socketRef.current.send(
+          JSON.stringify({ type: "ack", message_id: message.message_id })
+        );
+      }
+
       if (message.type === "pong") {
         missedPingCountRef.current = 0;
       }
