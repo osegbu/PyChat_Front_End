@@ -81,9 +81,10 @@
 }
 .chatTime {
   color: var(--textSoft);
-  font-size: 12px;
+  font-size: 13px;
   width: 100%;
   text-align: right;
+  margin-top: 2px;
 }
 .chatImageWrapper {
   width: 600px;
