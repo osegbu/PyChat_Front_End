@@ -53,18 +53,24 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
     }
   }, [messageQueue, connectionStatus]);
 
-  const updateMessages = useCallback(
-    ({ chats }) => {
-      setMessages((prevMessages) => [
+const updateMessages = useCallback(
+  ({ chats }) => {
+    setMessages((prevMessages) => {
+      const existingMessageIds = new Set(prevMessages.map((msg) => msg.uuid));
+      const newChats = chats.filter((chat) => !existingMessageIds.has(chat.uuid));
+
+      return [
         ...prevMessages,
-        ...chats.map((chat) => ({
+        ...newChats.map((chat) => ({
           ...chat,
-          ...(chat.sender_id == session?.user?.id && { status: "sent" }),
+          ...(chat.sender_id === session?.user?.id && { status: "sent" }),
         })),
-      ]);
-    },
-    [session?.user?.id]
-  );
+      ];
+    });
+  },
+  [session?.user?.id]
+);
+
 
   const startHeartbeat = useCallback(() => {
     heartbeatRef.current = setInterval(() => {
@@ -180,12 +186,29 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       if (navigator.onLine) {
         reconnectIntervalRef.current = setTimeout(connect, 5000);
       } else {
-        console.warn(
-          "No internet connection. Waiting for network to reconnect."
-        );
+        setConnectionStatus("Waiting for network...");
       }
     };
   }, [session, flushMessageQueue, startHeartbeat, stopHeartbeat]);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      console.log("Internet connection restored. Reconnecting...");
+      connect();
+    };
+
+    const handleOffline = () => {
+      console.warn("Lost internet connection.");
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [connect]);
 
   return {
     connect,

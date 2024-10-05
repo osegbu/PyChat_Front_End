@@ -181,3 +181,10 @@
     display: none;
   }
 }
+.connectionStatus {
+  font-size: 0.85rem;
+  color: var(--textSoft);
+  padding: 0px 16px;
+  margin-top: -12px;
+  margin-bottom: 2px;
+}

@@ -4,9 +4,13 @@ import dynamic from "next/dynamic";
 import { memo, useMemo } from "react";
 import Loader from "./Loader";
 import CurrentUser from "../currentUser/CurrentUser";
-import { useHomeContext } from "../homeComponent/HomeComponent";
+import {
+  useConnectionContext,
+  useHomeContext,
+} from "../homeComponent/HomeComponent";
 
 const UserComponent = () => {
+  const { connectionStatus } = useConnectionContext();
   const { isChatOpen } = useHomeContext();
 
   const MemoizedUserList = dynamic(() => import("./UserList"), {
@@ -29,6 +33,9 @@ const UserComponent = () => {
   return (
     <div className={`${isChatOpen && styles.collapse} ${styles.container}`}>
       <CurrentUser />
+      {connectionStatus !== "Connected" && (
+        <div className={styles.connectionStatus}>{connectionStatus}</div>
+      )}
       <Search />
       {UserList}
     </div>

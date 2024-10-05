@@ -18,6 +18,7 @@ import useWebSocket from "../websocket/WebSocketComponent ";
 
 const HomeContext = createContext();
 const ChatContext = createContext();
+const ConnectionContext = createContext();
 
 const LoadChat = dynamic(() => import("@/components/chatanddetails/LoadChat"));
 
@@ -100,10 +101,11 @@ const HomeComponent = () => {
   } = useWebSocket(onStatusUpdate, onTyping);
 
   const hasFetchedUsers = useRef(false);
-  const isFetching = useRef(false);
+  const isFetchingUsers = useRef(false);
+  const isFetchingChats = useRef(false);
 
-  const fetchDataAndChats = useCallback(async () => {
-    isFetching.current = true;
+  const FetchUsers = useCallback(async () => {
+    isFetchingUsers.current = true;
     setLoadingStage("Fetching users...");
     const users = await fetchUser();
     if (users.success) {
@@ -113,7 +115,10 @@ const HomeComponent = () => {
     } else {
       console.log(users.message);
     }
+  }, []);
 
+  const FetchChats = useCallback(async () => {
+    isFetchingChats.current = true;
     setLoadingStage("Fetching chats...");
     const chats = await fetchChats();
     if (chats.success) {
@@ -123,20 +128,23 @@ const HomeComponent = () => {
       console.log(users.message);
     }
 
-    if (chats.success && users.success) hasFetchedUsers.current = true;
+    if (chats.success) hasFetchedUsers.current = true;
+    isFetchingChats.current = false;
   }, []);
 
   useEffect(() => {
     if (connectionStatus === "Disconnected") connect();
-
-    if (!isFetching.current) {
-      fetchDataAndChats();
+    if (!isFetchingUsers.current) {
+      FetchUsers();
     }
   }, []);
 
   useEffect(() => {
     if (connectionStatus === "Connected") {
       flushMessageQueue();
+      if (!isFetchingChats.current) {
+        FetchChats();
+      }
     }
   }, [connectionStatus]);
 
@@ -178,10 +186,12 @@ const HomeComponent = () => {
       {hasFetchedUsers.current ? (
         <HomeContext.Provider value={homeContextValue}>
           <ChatContext.Provider value={chatContextValue}>
-            <div className="mainContainer">
-              <UserComponent />
-              <LoadChat />
-            </div>
+            <ConnectionContext.Provider value={{ connectionStatus }}>
+              <div className="mainContainer">
+                <UserComponent />
+                <LoadChat />
+              </div>
+            </ConnectionContext.Provider>
           </ChatContext.Provider>
         </HomeContext.Provider>
       ) : (
@@ -193,5 +203,6 @@ const HomeComponent = () => {
 
 export const useHomeContext = () => useContext(HomeContext);
 export const useChatContext = () => useContext(ChatContext);
+export const useConnectionContext = () => useContext(ConnectionContext);
 
 export default memo(HomeComponent);
