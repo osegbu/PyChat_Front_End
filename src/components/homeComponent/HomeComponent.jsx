@@ -11,10 +11,10 @@ import {
   useRef,
   memo,
 } from "react";
-import { fetchChats, fetchUser } from "@/lib/action";
+import { fetchUser } from "@/lib/action";
 import UserComponent from "../usercomponent/UserComponent";
 import { useSession } from "next-auth/react";
-import useWebSocket from "../websocket/WebSocketComponent ";
+import WebSocket from "../websocket/Websocket";
 
 const HomeContext = createContext();
 const ChatContext = createContext();
@@ -91,18 +91,11 @@ const HomeComponent = () => {
     });
   }, []);
 
-  const {
-    connect,
-    sendMessage,
-    updateMessages,
-    messages,
-    connectionStatus,
-    flushMessageQueue,
-  } = useWebSocket(onStatusUpdate, onTyping);
+  const { connect, sendMessage, messages, connectionStatus, updateMessages } =
+    WebSocket(onStatusUpdate, onTyping);
 
   const hasFetchedUsers = useRef(false);
   const isFetchingUsers = useRef(false);
-  const isFetchingChats = useRef(false);
 
   const FetchUsers = useCallback(async () => {
     isFetchingUsers.current = true;
@@ -112,24 +105,11 @@ const HomeComponent = () => {
       const userList = users.users.filter((user) => user.id != session.user.id);
       dispatch({ type: "UPDATE_USER_LIST", users: userList });
       console.log("Done getting users");
+      updateMessages();
+      hasFetchedUsers.current = true;
     } else {
       console.log(users.message);
     }
-  }, []);
-
-  const FetchChats = useCallback(async () => {
-    isFetchingChats.current = true;
-    setLoadingStage("Fetching chats...");
-    const chats = await fetchChats();
-    if (chats.success) {
-      updateMessages({ chats: chats.chats });
-      console.log("Done getting chats");
-    } else {
-      console.log(users.message);
-    }
-
-    if (chats.success) hasFetchedUsers.current = true;
-    isFetchingChats.current = false;
   }, []);
 
   useEffect(() => {
@@ -138,15 +118,6 @@ const HomeComponent = () => {
       FetchUsers();
     }
   }, []);
-
-  useEffect(() => {
-    if (connectionStatus === "Connected") {
-      flushMessageQueue();
-      if (!isFetchingChats.current) {
-        FetchChats();
-      }
-    }
-  }, [connectionStatus]);
 
   const openChat = useCallback((id) => {
     dispatch({ type: "CHAT_OPEN", id });

@@ -12,7 +12,11 @@ export default async function Home() {
   const session = await auth();
 
   if (!session) {
-    return <Form />;
+    return (
+      <SessionProvider session={session}>
+        <Form />
+      </SessionProvider>
+    );
   }
 
   return (

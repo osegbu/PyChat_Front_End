@@ -59,11 +59,14 @@ const Chats = () => {
     }
   };
 
-  const filteredChat = messages.filter(
-    (message) =>
-      (message.sender_id == session.user.id && message.receiver_id == userID) ||
-      (message.receiver_id == session.user.id && message.sender_id == userID)
-  );
+  const filteredChat = messages
+    .filter(
+      (message) =>
+        (message.sender_id == session.user.id &&
+          message.receiver_id == userID) ||
+        (message.receiver_id == session.user.id && message.sender_id == userID)
+    )
+    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
   const groupMessagesByDate = () => {
     return filteredChat.reduce((grouped, message) => {

@@ -1,9 +1,9 @@
 "use client";
-
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./login.module.css";
-import { login } from "@/lib/action";
+import { login, fetchChats } from "@/lib/action";
+import { persistChatInDB } from "../websocket/dbUtils";
 
 export const SignIn = ({ children }) => {
   const router = useRouter();
@@ -41,6 +41,22 @@ export const SignIn = ({ children }) => {
 
         if (result.success) {
           setMessage("Login successful!");
+
+          const chats = await fetchChats();
+          if (chats.success) {
+            const chatArray = chats.chats;
+
+            await Promise.all(
+              chatArray.map(async (chat) => {
+                if (chat.sender_id === result?.data?.id) {
+                  chat.status = "sent";
+                }
+                await persistChatInDB(chat);
+              })
+            );
+
+            console.log("Chats successfully persisted in IndexedDB");
+          }
           router.refresh("/");
         } else {
           setMessage(result.message);

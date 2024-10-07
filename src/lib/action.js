@@ -52,7 +52,7 @@ export const login = async (formData) => {
       password,
     });
     await handleSignIn(credentials);
-    return { success: true };
+    return { success: true, data: credentials };
   } catch (error) {
     return { success: false, message: `Login error: ${error.message}` };
   }
