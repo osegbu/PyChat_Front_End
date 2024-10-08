@@ -1,22 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // reactStrictMode: true,
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "100.26.193.126",
-        port: "30067",
+        hostname: "54.175.214.30",
+        port: "30000",
       },
       {
         protocol: "http",
-        hostname: "100.26.193.126",
-        port: "30068",
+        hostname: "54.175.214.30",
+        port: "30001",
       },
       {
         protocol: "http",
-        hostname: "100.26.193.126",
-        port: "30069",
+        hostname: "54.175.214.30",
+        port: "30002",
       },
       {
         protocol: "http",
