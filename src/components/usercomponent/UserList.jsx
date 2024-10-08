@@ -24,9 +24,9 @@ const User = memo(({ id, username, profileimage, status }) => {
     openChat(id);
   }, [openChat, id]);
 
-  const capitalizeFirstChar = useCallback((str) => {
+  const capitalizeFirstChar = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  });
+  };
 
   return (
     <div className={styles.eachUser} onClick={handleUserClick}>

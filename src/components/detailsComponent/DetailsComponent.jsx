@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./details.module.css";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
@@ -29,9 +29,9 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
         message.image)
   );
 
-  const capitalizeFirstChar = useCallback((str) => {
+  const capitalizeFirstChar = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  });
+  };
 
   return (
     <div className={`${isOpen && styles.active} ${styles.container}`}>

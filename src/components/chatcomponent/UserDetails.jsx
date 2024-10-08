@@ -1,7 +1,7 @@
 import styles from "./chat.module.css";
 import Image from "next/image";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 
 const UserDetails = ({ openDetails }) => {
@@ -13,9 +13,9 @@ const UserDetails = ({ openDetails }) => {
     [userID, Users]
   );
 
-  const capitalizeFirstChar = useCallback((str) => {
+  const capitalizeFirstChar = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  });
+  };
 
   return (
     <div className={styles.chatUserDetails}>
