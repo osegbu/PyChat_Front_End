@@ -18,10 +18,17 @@ export const SignIn = ({ children }) => {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    if (name === "username") {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value.replace(/\s+/g, ""),
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   }, []);
 
   const handleSubmit = useCallback(

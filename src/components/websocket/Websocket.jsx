@@ -5,12 +5,7 @@ import {
   stopHeartbeat,
   handleReconnect,
 } from "./connectionUtils";
-import {
-  persistChatInDB,
-  updateChatInDB,
-  getAllChatsFromDB,
-  initDB,
-} from "./dbUtils";
+import { persistChatInDB, updateChatInDB, getAllChatsFromDB } from "./dbUtils";
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL;
 
@@ -132,7 +127,6 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
     socketRef.current = socket;
 
     socket.onopen = () => {
-      initDB();
       setConnectionStatus("Connected");
       console.log("WebSocket connection established");
 
@@ -169,6 +163,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       if (message.type === "chat") {
         setMessages((prevMessages) => [...prevMessages, message]);
         persistChatInDB(message);
+        console.log(messages);
       }
 
       if (message.type === "msgupdate") {

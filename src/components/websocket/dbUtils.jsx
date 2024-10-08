@@ -49,19 +49,16 @@ export const updateChatInDB = async (uuid, updatedChat) => {
   }
 };
 
-export const getAllChatsFromDB = () => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open("ChatDB", 1);
+export const getAllChatsFromDB = async () => {
+  try {
+    const db = await initDB();
+    const transaction = db.transaction("chats", "readonly");
+    const store = transaction.objectStore("chats");
+    const allChatsRequest = store.getAll();
 
-    request.onsuccess = (event) => {
-      const db = event.target.result;
-      const transaction = db.transaction("chats", "readonly");
-      const store = transaction.objectStore("chats");
-      const allChatsRequest = store.getAll();
-
+    return new Promise((resolve, reject) => {
       allChatsRequest.onsuccess = () => {
-        const allChats = allChatsRequest.result;
-        const sortedChats = allChats.sort(
+        const sortedChats = allChatsRequest.result.sort(
           (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
         );
         resolve(sortedChats);
@@ -70,12 +67,11 @@ export const getAllChatsFromDB = () => {
       allChatsRequest.onerror = (err) => {
         reject(err);
       };
-    };
-
-    request.onerror = (err) => {
-      reject(err);
-    };
-  });
+    });
+  } catch (error) {
+    console.error("Error fetching chats from IndexedDB", error);
+    return [];
+  }
 };
 
 export const deleteDatabase = () => {

@@ -62,7 +62,7 @@ const ChatInputField = ({
       const jsonMessage = JSON.stringify({
         type: "chat",
         uuid,
-        message,
+        message: message.trimStart().trimEnd(),
         sender_id: session.user.id,
         receiver_id,
         timestamp,
@@ -141,7 +141,6 @@ const ChatInputField = ({
         <input
           type="file"
           id="imageUpload"
-          multiple
           accept="image/jpeg, image/png"
           style={{ display: "none" }}
           onChange={handleImageUpload}

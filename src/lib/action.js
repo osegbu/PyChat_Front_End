@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn, signOut, auth } from "@/lib/auth";
+import { signIn, auth } from "@/lib/auth";
 import { generateToken } from "./accessToken";
 import { makeApiCall } from "./makeApiCall ";
 

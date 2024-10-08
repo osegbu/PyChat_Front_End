@@ -20,6 +20,10 @@
   padding: 8px;
   margin: 8px 0px;
   margin-bottom: 16px;
+  outline: none;
+}
+.formContainer input:focus {
+  outline: 0.2rem solid rgb(68, 68, 68);
 }
 .formContainer button {
   width: 100%;

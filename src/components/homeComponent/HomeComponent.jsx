@@ -35,9 +35,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
 const reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_USER_LIST":
-      const userList = action.users.map((users) => ({
-        ...users,
-        profileimage: `${BASE_URL}/${users.profileimage}`,
+      const userList = action.users.map((user) => ({
+        ...user,
+        profileimage: `${BASE_URL}/${user.profileimage}`,
       }));
       return { ...state, Users: userList, fullUserList: userList };
 
@@ -71,7 +71,7 @@ const reducer = (state, action) => {
 };
 
 const HomeComponent = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loadingStage, setLoadingStage] = useState("");
 
@@ -110,14 +110,17 @@ const HomeComponent = () => {
     } else {
       console.log(users.message);
     }
-  }, []);
+    isFetchingUsers.current = false;
+  }, [session, updateMessages]);
 
   useEffect(() => {
-    if (connectionStatus === "Disconnected") connect();
-    if (!isFetchingUsers.current) {
-      FetchUsers();
+    if (status === "authenticated") {
+      if (connectionStatus === "Disconnected") connect();
+      if (!isFetchingUsers.current && !hasFetchedUsers.current) {
+        FetchUsers();
+      }
     }
-  }, []);
+  }, [status, connectionStatus, FetchUsers]);
 
   const openChat = useCallback((id) => {
     dispatch({ type: "CHAT_OPEN", id });
@@ -166,7 +169,7 @@ const HomeComponent = () => {
           </ChatContext.Provider>
         </HomeContext.Provider>
       ) : (
-        <div>{loadingStage}</div>
+        <div>{loadingStage || "Loading..."}</div>
       )}
     </>
   );

@@ -24,6 +24,10 @@ const User = memo(({ id, username, profileimage, status }) => {
     openChat(id);
   }, [openChat, id]);
 
+  const capitalizeFirstChar = useCallback((str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  });
+
   return (
     <div className={styles.eachUser} onClick={handleUserClick}>
       <div className={styles.imageContainer}>
@@ -42,7 +46,7 @@ const User = memo(({ id, username, profileimage, status }) => {
         />
       </div>
       <div className={styles.flexRight}>
-        <div className={styles.userName}>{username}</div>
+        <div className={styles.userName}>{capitalizeFirstChar(username)}</div>
         <div className={styles.lastMsg}>
           {lastMsg?.message || (lastMsg?.image && "Photo") || "No messages yet"}
         </div>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./details.module.css";
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
@@ -29,6 +29,10 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
         message.image)
   );
 
+  const capitalizeFirstChar = useCallback((str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  });
+
   return (
     <div className={`${isOpen && styles.active} ${styles.container}`}>
       <Image
@@ -48,7 +52,9 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
             height={100}
           />
         </div>
-        <div className={styles.userName}>{user.username}</div>
+        <div className={styles.userName}>
+          {capitalizeFirstChar(user.username)}
+        </div>
       </div>
       {filteredChat != "" && (
         <div className={styles.sharedImages}>
