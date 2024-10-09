@@ -5,31 +5,25 @@ import { useEffect, useState } from "react";
 import HomeComponent from "./homeComponent/HomeComponent";
 
 export const LandingPage = () => {
-  const { status } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
-  const checkSession = async () => {
-    const currentSession = await getSession();
-
-    if (!currentSession) {
-      router.replace("/login");
-    } else {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (status === "loading") {
+    const checkSession = async () => {
       setIsLoading(true);
-    } else if (status === "unauthenticated") {
-      checkSession();
-    } else {
-      setIsLoading(false);
-    }
-  }, [status, router]);
+      const currentSession = await getSession();
 
-  if (isLoading || status === "loading") {
+      if (!currentSession) {
+        router.replace("/login");
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
+  }, [router]);
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
