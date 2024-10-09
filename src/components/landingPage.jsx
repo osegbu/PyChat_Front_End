@@ -28,5 +28,5 @@ export const LandingPage = () => {
     }
   }, [status, router]);
 
-  return <>{session ? <HomeComponent /> : null}</>;
+  return <>{currentSession ? <HomeComponent /> : null}</>;
 };
