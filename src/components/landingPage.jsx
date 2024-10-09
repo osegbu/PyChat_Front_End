@@ -11,24 +11,27 @@ export const LandingPage = () => {
 
   const checkSession = async () => {
     const currentSession = await getSession();
-    setIsLoading(false);
 
     if (!currentSession) {
       router.replace("/login");
     } else {
       setIsLoading(false);
-      console.log(currentSession);
     }
   };
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (status === "loading") {
+      setIsLoading(true);
+    } else if (status === "unauthenticated") {
       checkSession();
     } else {
-      console.log("No show in useEffect");
       setIsLoading(false);
     }
-  }, [isLoading, status, router]);
+  }, [status, router]);
 
-  return <>{isLoading ? <div>Loading...</div> : <HomeComponent />}</>;
+  if (isLoading || status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  return <HomeComponent />;
 };
