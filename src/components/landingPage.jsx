@@ -1,32 +1,34 @@
 "use client";
 import { useSession, getSession } from "next-auth/react";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-
-const HomeComponent = dynamic(
-  () => import("@/components/homeComponent/HomeComponent"),
-  { ssr: false, loading: () => <div>Checking Session...</div> }
-);
+import { useEffect, useState } from "react";
+import HomeComponent from "./homeComponent/HomeComponent";
 
 export const LandingPage = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkSession = async () => {
       const currentSession = await getSession();
+      setIsLoading(false);
+
       if (!currentSession) {
         router.replace("/login");
-      } else {
-        console.log(currentSession);
       }
     };
 
     if (status === "unauthenticated") {
       checkSession();
+    } else {
+      setIsLoading(false);
     }
-  }, [currentSession, session, status, router]);
+  }, [status, router]);
 
-  return <>{session ? <HomeComponent /> : "No Session Yet"}</>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <HomeComponent />;
 };
