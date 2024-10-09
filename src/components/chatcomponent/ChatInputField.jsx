@@ -44,6 +44,7 @@ const ChatInputField = ({
           receiver_id,
           timestamp,
           status: "sending...",
+          image: `data:${fileData.type};base64,${base64File}`,
           file: {
             name: fileData.name,
             type: fileData.type,
