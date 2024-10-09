@@ -1,27 +1,13 @@
-import Form from "@/components/forms/Form";
 import { auth } from "@/lib/auth";
-import dynamic from "next/dynamic";
 import { SessionProvider } from "next-auth/react";
-
-const HomeComponent = dynamic(
-  () => import("@/components/homeComponent/HomeComponent"),
-  { ssr: false, loading: () => <div>Checking Session.....</div> }
-);
+import { LandingPage } from "@/components/landingPage";
 
 export default async function Home() {
   const session = await auth();
 
-  if (!session) {
-    return (
-      <SessionProvider session={session}>
-        <Form />
-      </SessionProvider>
-    );
-  }
-
   return (
     <SessionProvider session={session}>
-      <HomeComponent />
+      <LandingPage />
     </SessionProvider>
   );
 }

@@ -8,9 +8,9 @@ import { deleteDatabase } from "../websocket/dbUtils";
 
 const CurrentUser = ({ logout }) => {
   const logOutUser = useCallback(async () => {
+    logout();
     const result = await handleLogout();
     if (result.success) {
-      logout();
       await deleteDatabase();
       await signOut();
     }

@@ -35,8 +35,7 @@ export const signup = async (formData) => {
       password,
       confirm_password,
     });
-    await handleSignIn(credentials);
-    return { success: true };
+    return { success: true, data: credentials };
   } catch (error) {
     return { success: false, message: `Signup error: ${error.message}` };
   }
@@ -51,7 +50,6 @@ export const login = async (formData) => {
       username,
       password,
     });
-    await handleSignIn(credentials);
     return { success: true, data: credentials };
   } catch (error) {
     return { success: false, message: `Login error: ${error.message}` };
