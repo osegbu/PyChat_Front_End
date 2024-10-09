@@ -4,6 +4,7 @@ import styles from "./login.module.css";
 import { login, fetchChats } from "@/lib/action";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { persistChatInDB } from "@/components/websocket/dbUtils";
 
 const LoginPage = () => {
   const router = useRouter();
