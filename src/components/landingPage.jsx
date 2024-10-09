@@ -19,5 +19,5 @@ export const LandingPage = () => {
     checkSession();
   }, [router]);
 
-  return <HomeComponent />;
+  return <div>Obinna Osegbu</div>;
 };

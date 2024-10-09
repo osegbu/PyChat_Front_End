@@ -71,7 +71,6 @@ const reducer = (state, action) => {
 };
 
 const HomeComponent = () => {
-  console.log("Rendered");
   const { data: session, status } = useSession();
   const [state, dispatch] = useReducer(reducer, initialState);
   const [loadingStage, setLoadingStage] = useState("");
