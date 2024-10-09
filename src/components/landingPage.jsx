@@ -18,6 +18,8 @@ export const LandingPage = () => {
       const currentSession = await getSession();
       if (!currentSession) {
         router.replace("/login");
+      } else {
+        console.log(currentSession);
       }
     };
 
