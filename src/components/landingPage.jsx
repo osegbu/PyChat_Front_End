@@ -16,6 +16,8 @@ export const LandingPage = () => {
 
       if (!currentSession) {
         router.replace("/login");
+      } else {
+        setIsLoading(false);
       }
     };
 
