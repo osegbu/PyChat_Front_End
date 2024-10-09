@@ -9,28 +9,26 @@ export const LandingPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const currentSession = await getSession();
+  const checkSession = async () => {
+    const currentSession = await getSession();
+    setIsLoading(false);
+
+    if (!currentSession) {
+      router.replace("/login");
+    } else {
       setIsLoading(false);
+      console.log(currentSession);
+    }
+  };
 
-      if (!currentSession) {
-        router.replace("/login");
-      } else {
-        setIsLoading(false);
-      }
-    };
-
+  useEffect(() => {
     if (status === "unauthenticated") {
       checkSession();
     } else {
+      console.log("No show in useEffect");
       setIsLoading(false);
     }
-  }, [status, router]);
+  }, [isLoading, status, router]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  return <HomeComponent />;
+  return <>{isLoading ? <div>Loading...</div> : <HomeComponent />}</>;
 };
