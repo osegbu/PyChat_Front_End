@@ -26,7 +26,7 @@ export const LandingPage = () => {
     if (status === "unauthenticated") {
       checkSession();
     }
-  }, [status, router]);
+  }, [session, status, router]);
 
-  return <>{session ? <HomeComponent /> : "NO Session Yet"}</>;
+  return <>{session && <HomeComponent />}</>;
 };
