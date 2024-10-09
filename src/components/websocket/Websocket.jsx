@@ -136,7 +136,6 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       }
       missedPingCountRef.current = 0;
 
-      // Start heartbeat
       heartbeatRef.current = startHeartbeat(
         socketRef,
         missedPingCountRef,
@@ -161,8 +160,14 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       }
 
       if (message.type === "chat") {
-        setMessages((prevMessages) => [...prevMessages, message]);
-        persistChatInDB(message);
+        setMessages((prevMessages) => {
+          const check = prevMessages.find((chat) => chat.uuid === message.uuid);
+          if (!check) {
+            persistChatInDB(message);
+            return [...prevMessages, message];
+          }
+          return prevMessages;
+        });
       }
 
       if (message.type === "msgupdate") {
