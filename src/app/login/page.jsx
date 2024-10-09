@@ -72,9 +72,7 @@ const LoginPage = () => {
           setMessage(result.message);
         }
       } catch (error) {
-        setMessage(
-          `An error occurred during signin. Please try again: ${error}`
-        );
+        setMessage(error);
       } finally {
         setLoading(false);
       }
