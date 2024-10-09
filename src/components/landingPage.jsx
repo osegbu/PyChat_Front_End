@@ -18,6 +18,8 @@ export const LandingPage = () => {
       const currentSession = await getSession();
       if (!currentSession) {
         router.replace("/login");
+      } else {
+        console.log(currentSession);
       }
     };
 
@@ -26,5 +28,5 @@ export const LandingPage = () => {
     }
   }, [status, router]);
 
-  return <>{status != "unauthenticated" ? <HomeComponent /> : null}</>;
+  return <>{session ? <HomeComponent /> : "NO Session Yet"}</>;
 };
