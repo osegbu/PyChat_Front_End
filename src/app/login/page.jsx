@@ -111,7 +111,7 @@ const LoginPage = () => {
         </button>
 
         <div style={{ textAlign: "center", marginTop: "16px" }}>
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <span
             style={{ color: "yellow", cursor: "pointer" }}
             onClick={() => router.push("/register")}
