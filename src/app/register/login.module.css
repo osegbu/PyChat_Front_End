@@ -32,6 +32,7 @@
   padding: 12px 8px;
   border-radius: 4px;
   border: none;
+  font-size: 14px;
   transition: all 0.5sec ease-in-out;
 }
 .formContainer button:hover {

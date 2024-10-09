@@ -163,7 +163,6 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       if (message.type === "chat") {
         setMessages((prevMessages) => [...prevMessages, message]);
         persistChatInDB(message);
-        console.log(messages);
       }
 
       if (message.type === "msgupdate") {

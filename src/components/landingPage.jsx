@@ -14,7 +14,7 @@ export const LandingPage = () => {
       const currentSession = await getSession();
 
       if (!currentSession) {
-        router.replace("/login");
+        window.location.href = "/login";
       } else {
         setIsLoading(false);
       }

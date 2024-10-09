@@ -5,17 +5,15 @@ import logoutIcon from "@/icons/logout.png";
 import { signOut } from "next-auth/react";
 import { handleLogout } from "@/lib/action";
 import { deleteDatabase } from "../websocket/dbUtils";
-import { useRouter } from "next/navigation";
 
 const CurrentUser = ({ logout }) => {
-  const router = useRouter();
   const logOutUser = useCallback(async () => {
     logout();
     const result = await handleLogout();
     if (result.success) {
       await deleteDatabase();
       await signOut({ redirect: false });
-      router.replace("/login");
+      window.location.href = "/login";
     }
   }, []);
 
