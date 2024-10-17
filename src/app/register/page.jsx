@@ -1,13 +1,27 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { signup } from "@/lib/action";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 const RegisterPage = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const currentSession = await getSession();
+      if (currentSession) {
+        router.replace("/");
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
+  }, [router]);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -64,11 +78,6 @@ const RegisterPage = () => {
 
         if (result.success) {
           setMessage("Signup successful!");
-          await signIn("credentials", {
-            redirect: false,
-            ...result.data,
-          });
-          router.replace("/");
         } else {
           setMessage(result.message);
         }
@@ -82,55 +91,61 @@ const RegisterPage = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <div className={styles.formTitle}>PyChat</div>
-      <div className={styles.formBody}>
-        <label>
-          Your Name:
-          <input
-            name="username"
-            type="text"
-            placeholder="First & Last Name"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Confirm Password:
-          <input
-            name="confirm_password"
-            type="password"
-            placeholder="Enter the password above"
-            value={formData.confirm_password}
-            onChange={handleChange}
-          />
-        </label>
-        {message && <p className={styles.message}>{message}</p>}
-        <button type="submit" disabled={loading}>
-          {loading ? "Signing Up..." : "Sign Up"}
-        </button>
+    <>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <form onSubmit={handleSubmit} className={styles.formContainer}>
+          <div className={styles.formTitle}>PyChat</div>
+          <div className={styles.formBody}>
+            <label>
+              Your Name:
+              <input
+                name="username"
+                type="text"
+                placeholder="First & Last Name"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Password:
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Confirm Password:
+              <input
+                name="confirm_password"
+                type="password"
+                placeholder="Enter the password above"
+                value={formData.confirm_password}
+                onChange={handleChange}
+              />
+            </label>
+            {message && <p className={styles.message}>{message}</p>}
+            <button type="submit" disabled={loading}>
+              {loading ? "Signing Up..." : "Sign Up"}
+            </button>
 
-        <div style={{ textAlign: "center", marginTop: "16px" }}>
-          Already have an account?{" "}
-          <span
-            style={{ color: "yellow", cursor: "pointer" }}
-            onClick={() => router.push("/login")}
-          >
-            Sign In
-          </span>
-        </div>
-      </div>
-    </form>
+            <div style={{ textAlign: "center", marginTop: "16px" }}>
+              Already have an account?{" "}
+              <span
+                style={{ color: "yellow", cursor: "pointer" }}
+                onClick={() => router.replace("/login")}
+              >
+                Sign In
+              </span>
+            </div>
+          </div>
+        </form>
+      )}
+    </>
   );
 };
 

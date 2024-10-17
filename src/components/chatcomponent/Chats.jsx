@@ -8,7 +8,7 @@ const Chats = () => {
   const endRef = useRef();
   const { data: session } = useSession();
   const { userID, messages } = useChatContext();
-  const BASE_URL = process.env.NEXT_PUBLIC_CHAT_URL;
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const formatTime = (timestamp) => {
     return new Date(timestamp).toLocaleTimeString([], {

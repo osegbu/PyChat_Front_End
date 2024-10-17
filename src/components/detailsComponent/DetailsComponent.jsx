@@ -9,7 +9,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
   const { data: session } = useSession();
   const { userID, messages } = useChatContext();
   const { Users } = useHomeContext();
-  const BASE_URL = process.env.NEXT_PUBLIC_CHAT_URL;
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const user = useMemo(() => {
     return Users.find((user) => user.id === userID);
@@ -28,10 +28,6 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
         message.sender_id == userID &&
         message.image)
   );
-
-  const capitalizeFirstChar = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
 
   return (
     <div className={`${isOpen && styles.active} ${styles.container}`}>
@@ -52,9 +48,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
             height={100}
           />
         </div>
-        <div className={styles.userName}>
-          {capitalizeFirstChar(user.username)}
-        </div>
+        <div className={styles.userName}>{user.username}</div>
       </div>
       {filteredChat != "" && (
         <div className={styles.sharedImages}>

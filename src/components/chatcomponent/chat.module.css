@@ -129,6 +129,7 @@
 }
 .chatUserDetails .userName {
   font-size: 1rem;
+  text-transform: capitalize;
 }
 .onlineStatus {
   color: var(--textSoft);
@@ -284,5 +285,9 @@
   .receiverChat,
   .senderChat {
     max-width: 85%;
+  }
+
+  .chatTime {
+    margin-top: 8px;
   }
 }

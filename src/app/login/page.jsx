@@ -1,13 +1,43 @@
 "use client";
-import { useState, useCallback, memo } from "react";
+import { useState, useCallback, memo, useEffect } from "react";
 import styles from "./login.module.css";
 import { login, fetchChats } from "@/lib/action";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 import { persistChatInDB } from "@/components/websocket/dbUtils";
+import { getSession, useSession } from "next-auth/react";
 
 const LoginPage = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const currentSession = await getSession();
+      if (currentSession && !isFetching) {
+        setIsFetching(true);
+        setMessage("Loading chats...");
+        const chats = await fetchChats();
+        if (chats.success) {
+          const chatArray = chats.chats;
+
+          await Promise.all(
+            chatArray.map(async (chat) => {
+              await persistChatInDB(chat);
+            })
+          );
+          router.push("/");
+
+          console.log(chats);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    checkSession();
+  }, []);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -46,30 +76,7 @@ const LoginPage = () => {
       try {
         const result = await login(formData);
 
-        if (result.success) {
-          await signIn("credentials", {
-            redirect: false,
-            ...result.data,
-          });
-
-          setMessage("Loading chats...");
-          const chats = await fetchChats();
-          if (chats.success) {
-            const chatArray = chats.chats;
-
-            await Promise.all(
-              chatArray.map(async (chat) => {
-                if (chat.sender_id === result?.data?.id) {
-                  chat.status = "sent";
-                }
-                await persistChatInDB(chat);
-              })
-            );
-            console.log("Chats successfully persisted in IndexedDB");
-            setMessage("Done");
-            router.replace("/");
-          }
-        } else {
+        if (!result.success) {
           setMessage(result.message);
         }
       } catch (error) {
@@ -83,46 +90,52 @@ const LoginPage = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <div className={styles.formTitle}>PyChat</div>
-      <div className={styles.formBody}>
-        <label>
-          Your Name:
-          <input
-            name="username"
-            type="text"
-            placeholder="First & Last Name"
-            value={formData.username}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </label>
-        {message && <p className={styles.message}>{message}</p>}
+    <>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <form onSubmit={handleSubmit} className={styles.formContainer}>
+          <div className={styles.formTitle}>PyChat</div>
+          <div className={styles.formBody}>
+            <label>
+              Your Name:
+              <input
+                name="username"
+                type="text"
+                placeholder="First & Last Name"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Password:
+              <input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </label>
+            {message && <p className={styles.message}>{message}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging In..." : "Sign In"}
-        </button>
+            <button type="submit" disabled={loading}>
+              {loading ? "Logging In..." : "Sign In"}
+            </button>
 
-        <div style={{ textAlign: "center", marginTop: "16px" }}>
-          Don&apos;t have an account?{" "}
-          <span
-            style={{ color: "yellow", cursor: "pointer" }}
-            onClick={() => router.push("/register")}
-          >
-            Sign Up
-          </span>
-        </div>
-      </div>
-    </form>
+            <div style={{ textAlign: "center", marginTop: "16px" }}>
+              Don&apos;t have an account?{" "}
+              <span
+                style={{ color: "yellow", cursor: "pointer" }}
+                onClick={() => router.replace("/register")}
+              >
+                Sign Up
+              </span>
+            </div>
+          </div>
+        </form>
+      )}
+    </>
   );
 };
 

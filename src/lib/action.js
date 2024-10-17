@@ -1,11 +1,10 @@
 "use server";
 
-import { signIn, auth } from "@/lib/auth";
+import { signIn, signOut, auth } from "@/lib/auth";
 import { generateToken } from "./accessToken";
 import { makeApiCall } from "./makeApiCall ";
 
-const USER_URL = process.env.NEXT_PUBLIC_USER_URL;
-const CHAT_URL = process.env.NEXT_PUBLIC_CHAT_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const handleSignIn = async (credentials) => {
   await signIn("credentials", {
@@ -27,7 +26,7 @@ const handleApiCall = async (url, method, body, headers = {}) => {
 
 export const signup = async (formData) => {
   const { username, password, confirm_password } = Object.fromEntries(formData);
-  const url = `${USER_URL}/signup`;
+  const url = `${BASE_URL}/signup`;
 
   try {
     const credentials = await handleApiCall(url, "POST", {
@@ -35,6 +34,12 @@ export const signup = async (formData) => {
       password,
       confirm_password,
     });
+
+    await signIn("credentials", {
+      redirect: false,
+      ...credentials,
+    });
+
     return { success: true, data: credentials };
   } catch (error) {
     return { success: false, message: `Signup error: ${error.message}` };
@@ -43,13 +48,19 @@ export const signup = async (formData) => {
 
 export const login = async (formData) => {
   const { username, password } = formData;
-  const url = `${USER_URL}/login`;
+  const url = `${BASE_URL}/login`;
 
   try {
     const credentials = await handleApiCall(url, "POST", {
       username,
       password,
     });
+
+    await signIn("credentials", {
+      redirect: false,
+      ...credentials,
+    });
+
     return { success: true, data: credentials };
   } catch (error) {
     return { success: false, message: `Login error: ${error.message}` };
@@ -57,7 +68,7 @@ export const login = async (formData) => {
 };
 
 export const fetchUser = async () => {
-  const url = `${USER_URL}/get_all_users`;
+  const url = `${BASE_URL}/get_all_users`;
 
   try {
     const users = await handleApiCall(url, "POST");
@@ -70,7 +81,7 @@ export const fetchUser = async () => {
 export const fetchChats = async () => {
   const session = await auth();
   const id = session.user.id;
-  const url = `${CHAT_URL}/load_chat/${id}`;
+  const url = `${BASE_URL}/load_chat/${id}`;
 
   try {
     const chats = await handleApiCall(url, "POST", "", {
@@ -85,7 +96,7 @@ export const fetchChats = async () => {
 export const handleLogout = async () => {
   const session = await auth();
   const id = session.user.id;
-  const url = `${USER_URL}/logout/${id}`;
+  const url = `${BASE_URL}/logout/${id}`;
 
   try {
     await handleApiCall(url, "POST");

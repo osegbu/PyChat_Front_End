@@ -32,6 +32,7 @@
   font-weight: 500;
   margin-top: 8px;
   font-size: 1rem;
+  text-transform: capitalize;
 }
 .userStatus {
   color: var(--textSoft);

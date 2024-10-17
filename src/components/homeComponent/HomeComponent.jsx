@@ -169,7 +169,7 @@ const HomeComponent = () => {
           </ChatContext.Provider>
         </HomeContext.Provider>
       ) : (
-        <div>{loadingStage || "Loading..."}</div>
+        <div>{loadingStage}</div>
       )}
     </>
   );
