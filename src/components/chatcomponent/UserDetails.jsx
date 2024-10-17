@@ -35,7 +35,9 @@ const UserDetails = ({ openDetails }) => {
         onClick={openDetails}
       />
       <div>
-        <div className={styles.userName}>{user.username}</div>
+        <div className={styles.userName}>
+          <b>{user.username}</b>
+        </div>
         {typing?.typing && typing.user_id == userID ? (
           <div className={styles.typingIndicator}>Typing...</div>
         ) : (

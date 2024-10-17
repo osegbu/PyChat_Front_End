@@ -287,7 +287,9 @@
     max-width: 85%;
   }
 
-  .chatTime {
-    margin-top: 8px;
+  .chatTime,
+  .onlineStatus,
+  .typingIndicator {
+    margin-top: 5px;
   }
 }

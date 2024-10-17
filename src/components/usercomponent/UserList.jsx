@@ -42,7 +42,9 @@ const User = memo(({ id, username, profileimage, status }) => {
         />
       </div>
       <div className={styles.flexRight}>
-        <div className={styles.userName}>{username}</div>
+        <div className={styles.userName}>
+          <b>{username}</b>
+        </div>
         <div className={styles.lastMsg}>
           {lastMsg?.message || (lastMsg?.image && "Photo") || "No messages yet"}
         </div>

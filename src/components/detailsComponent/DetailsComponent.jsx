@@ -44,11 +44,13 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
           <Image
             src={user.profileimage}
             alt={`Profile picture of ${user.username}`}
-            width={100}
-            height={100}
+            width={150}
+            height={150}
           />
         </div>
-        <div className={styles.userName}>{user.username}</div>
+        <div className={styles.userName}>
+          <b>{user.username}</b>
+        </div>
       </div>
       {filteredChat != "" && (
         <div className={styles.sharedImages}>
