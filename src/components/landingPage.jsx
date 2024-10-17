@@ -1,31 +1,22 @@
 "use client";
 import { useSession, getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import HomeComponent from "./homeComponent/HomeComponent";
 
 export const LandingPage = () => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     const checkSession = async () => {
-      setIsLoading(true);
       const currentSession = await getSession();
-
       if (!currentSession) {
         window.location.href = "/login";
-      } else {
-        setIsLoading(false);
       }
     };
-
     checkSession();
-  }, [router]);
+  }, [session]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (session) {
+    return <HomeComponent />;
   }
-
-  return <HomeComponent />;
 };

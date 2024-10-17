@@ -25,18 +25,6 @@ const CurrentUser = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const currentSession = await getSession();
-      if (!currentSession) {
-        window.location.href = "/login";
-      } else {
-        setIsLoading(false);
-      }
-    };
-    checkSession();
-  }, [session]);
-
   return (
     <div className={styles.container}>
       <div className={styles.profileImage}>
