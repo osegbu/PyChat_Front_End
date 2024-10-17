@@ -4,14 +4,15 @@
   position: relative;
   display: flex;
   gap: 8px;
-  /* align-items: center; */
+  align-items: center;
 }
 .appName {
   font-size: 1rem;
   text-transform: capitalize;
 }
 .connectionStatus {
-  font-size: 0.8rem;
+  margin-top: 5px;
+  font-size: 0.85rem;
   color: var(--textSoft);
 }
 

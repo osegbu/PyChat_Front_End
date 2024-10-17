@@ -40,7 +40,9 @@ const CurrentUser = () => {
 
   return (
     <>
-      {!isLoading && (
+      {isLoading ? (
+        <div></div>
+      ) : (
         <div className={styles.container}>
           <div className={styles.profileImage}>
             <Image
@@ -51,7 +53,9 @@ const CurrentUser = () => {
             />
           </div>
           <div className={styles.appName}>
-            <div>{session.user.username}</div>
+            <div>
+              <b>{session.user.username}</b>
+            </div>
             <div className={styles.connectionStatus}>
               {loggingOut ? "Logging out..." : connectionStatus}
             </div>

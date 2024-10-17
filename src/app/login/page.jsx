@@ -27,8 +27,6 @@ const LoginPage = () => {
             })
           );
           router.push("/");
-
-          console.log(chats);
         }
       } else {
         setIsLoading(false);
