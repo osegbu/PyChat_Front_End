@@ -51,6 +51,8 @@ const User = memo(({ id, username, profileimage, status }) => {
   );
 });
 
+User.displayName = "User";
+
 const UsersList = () => {
   const { Users } = useHomeContext();
 
