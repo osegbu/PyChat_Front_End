@@ -22,7 +22,6 @@ const CurrentUser = () => {
       setLoggingOut(true);
       await deleteDatabase();
       await signOut({ redirect: false });
-      window.location.href = "/login";
     }
   }, []);
 
@@ -30,7 +29,7 @@ const CurrentUser = () => {
     const checkSession = async () => {
       const currentSession = await getSession();
       if (!currentSession) {
-        router.replace("/login");
+        window.location.href = "/login";
       } else {
         setIsLoading(false);
       }
@@ -39,38 +38,27 @@ const CurrentUser = () => {
   }, [session]);
 
   return (
-    <>
-      {isLoading ? (
-        <div></div>
-      ) : (
-        <div className={styles.container}>
-          <div className={styles.profileImage}>
-            <Image
-              src={BASE_URL + "/" + session.user.profileimage}
-              width={38}
-              height={38}
-              alt={`Profile picture of ${session.user.username}`}
-            />
-          </div>
-          <div className={styles.appName}>
-            <div>
-              <b>{session.user.username}</b>
-            </div>
-            <div className={styles.connectionStatus}>
-              {loggingOut ? "Logging out..." : connectionStatus}
-            </div>
-          </div>
-          <button onClick={logOutUser} title="Logout">
-            <Image
-              src={logoutIcon}
-              alt="Logout Button"
-              height={24}
-              width={24}
-            />
-          </button>
+    <div className={styles.container}>
+      <div className={styles.profileImage}>
+        <Image
+          src={BASE_URL + "/" + session?.user?.profileimage}
+          width={38}
+          height={38}
+          alt={`Profile picture of ${session?.user?.username}`}
+        />
+      </div>
+      <div className={styles.appName}>
+        <div>
+          <b>{session?.user?.username}</b>
         </div>
-      )}
-    </>
+        <div className={styles.connectionStatus}>
+          {loggingOut ? "Logging out..." : connectionStatus}
+        </div>
+      </div>
+      <button onClick={logOutUser} title="Logout">
+        <Image src={logoutIcon} alt="Logout Button" height={24} width={24} />
+      </button>
+    </div>
   );
 };
 
