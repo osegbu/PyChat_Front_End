@@ -1,7 +1,7 @@
 import styles from "./chat.module.css";
 import Image from "next/image";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useEffect } from "react";
 import backArrow from "@/icons/arrow.png";
 
 const UserDetails = ({ openDetails }) => {
@@ -13,9 +13,19 @@ const UserDetails = ({ openDetails }) => {
     [userID, Users]
   );
 
-  const capitalizeFirstChar = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-  };
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      closeChat();
+      window.history.pushState(null, "", window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handleBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [closeChat]);
 
   return (
     <div className={styles.chatUserDetails}>
@@ -38,7 +48,7 @@ const UserDetails = ({ openDetails }) => {
         <div className={styles.userName}>
           <b>{user.username}</b>
         </div>
-        {typing?.typing && typing.user_id == userID ? (
+        {typing?.typing && typing.user_id === userID ? (
           <div className={styles.typingIndicator}>Typing...</div>
         ) : (
           <div

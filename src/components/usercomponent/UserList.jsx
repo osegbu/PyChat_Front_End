@@ -24,6 +24,14 @@ const User = memo(({ id, username, profileimage, status }) => {
     openChat(id);
   }, [openChat, id]);
 
+  const formatTime = (timestamp) => {
+    return new Date(timestamp).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
   return (
     <div className={styles.eachUser} onClick={handleUserClick}>
       <div className={styles.imageContainer}>
@@ -42,11 +50,23 @@ const User = memo(({ id, username, profileimage, status }) => {
         />
       </div>
       <div className={styles.flexRight}>
-        <div className={styles.userName}>
-          <b>{username}</b>
+        <div className={styles.lastMessage}>
+          <div className={styles.userName}>
+            <b>{username}</b>
+          </div>
+          <div className={styles.lastTime}>
+            {lastMsg?.timestamp && formatTime(lastMsg?.timestamp)}
+          </div>
         </div>
-        <div className={styles.lastMsg}>
-          {lastMsg?.message || (lastMsg?.image && "Photo") || "No messages yet"}
+        <div className={styles.lastMessage}>
+          <div className={styles.lastMsg}>
+            {lastMsg?.message ||
+              (lastMsg?.image && "Photo") ||
+              "No messages yet"}
+          </div>
+          <div className={styles.lastStatus}>
+            {lastMsg?.status && lastMsg?.status}
+          </div>
         </div>
       </div>
     </div>

@@ -7,14 +7,10 @@ import {
   useMemo,
   useCallback,
   useEffect,
-  useState,
-  useRef,
   memo,
 } from "react";
-import { fetchUser } from "@/lib/action";
 import UserComponent from "../usercomponent/UserComponent";
-import { useSession } from "next-auth/react";
-import WebSocket from "../websocket/Websocket";
+import useWebSocket from "@/app/websocket/Websocket";
 
 const HomeContext = createContext();
 const ChatContext = createContext();
@@ -70,11 +66,8 @@ const reducer = (state, action) => {
   }
 };
 
-const HomeComponent = () => {
-  const { data: session, status } = useSession();
+const HomeComponent = ({ userList }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [loadingStage, setLoadingStage] = useState("");
-
   const onStatusUpdate = useCallback((message) => {
     dispatch({
       type: "UPDATE_USER_STATUS",
@@ -92,35 +85,13 @@ const HomeComponent = () => {
   }, []);
 
   const { connect, sendMessage, messages, connectionStatus, updateMessages } =
-    WebSocket(onStatusUpdate, onTyping);
-
-  const hasFetchedUsers = useRef(false);
-  const isFetchingUsers = useRef(false);
-
-  const FetchUsers = useCallback(async () => {
-    isFetchingUsers.current = true;
-    setLoadingStage("Fetching users...");
-    const users = await fetchUser();
-    if (users.success) {
-      const userList = users.users.filter((user) => user.id != session.user.id);
-      dispatch({ type: "UPDATE_USER_LIST", users: userList });
-      console.log("Done getting users");
-      updateMessages();
-      hasFetchedUsers.current = true;
-    } else {
-      console.log(users.message);
-    }
-    isFetchingUsers.current = false;
-  }, [session, updateMessages]);
+    useWebSocket(onStatusUpdate, onTyping);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      if (connectionStatus === "Disconnected") connect();
-      if (!isFetchingUsers.current && !hasFetchedUsers.current) {
-        FetchUsers();
-      }
-    }
-  }, [status, connectionStatus, FetchUsers]);
+    dispatch({ type: "UPDATE_USER_LIST", users: userList });
+    updateMessages();
+    connect();
+  }, []);
 
   const openChat = useCallback((id) => {
     dispatch({ type: "CHAT_OPEN", id });
@@ -154,24 +125,17 @@ const HomeComponent = () => {
     }),
     [state.userID, sendMessage, messages, state.typing]
   );
-
   return (
-    <>
-      {hasFetchedUsers.current ? (
-        <HomeContext.Provider value={homeContextValue}>
-          <ChatContext.Provider value={chatContextValue}>
-            <ConnectionContext.Provider value={{ connectionStatus }}>
-              <div className="mainContainer">
-                <UserComponent />
-                <LoadChat />
-              </div>
-            </ConnectionContext.Provider>
-          </ChatContext.Provider>
-        </HomeContext.Provider>
-      ) : (
-        <div>{loadingStage}</div>
-      )}
-    </>
+    <HomeContext.Provider value={homeContextValue}>
+      <ChatContext.Provider value={chatContextValue}>
+        <ConnectionContext.Provider value={{ connectionStatus }}>
+          <div className="mainContainer">
+            <UserComponent />
+            <LoadChat />
+          </div>
+        </ConnectionContext.Provider>
+      </ChatContext.Provider>
+    </HomeContext.Provider>
   );
 };
 

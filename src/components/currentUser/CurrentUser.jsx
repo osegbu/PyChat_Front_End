@@ -2,26 +2,23 @@ import Image from "next/image";
 import { useCallback, memo, useState, useEffect } from "react";
 import styles from "./user.module.css";
 import logoutIcon from "@/icons/logout.png";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { handleLogout } from "@/lib/action";
-import { deleteDatabase } from "../websocket/dbUtils";
 import { useConnectionContext } from "../homeComponent/HomeComponent";
-import { useRouter } from "next/navigation";
+import { deleteDatabase } from "@/app/websocket/dbUtils";
 
 const CurrentUser = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
-  const router = useRouter();
   const { data: session } = useSession();
   const { connectionStatus } = useConnectionContext();
   const [loggingOut, setLoggingOut] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const logOutUser = useCallback(async () => {
+    setLoggingOut(true);
     const result = await handleLogout();
     if (result.success) {
-      setLoggingOut(true);
       await deleteDatabase();
-      await signOut({ redirect: false });
+      await signOut();
     }
   }, []);
 

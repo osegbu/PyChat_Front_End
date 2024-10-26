@@ -70,15 +70,24 @@
   text-overflow: ellipsis;
   font-size: 1rem;
   text-transform: capitalize;
+  margin-right: 5px;
+}
+.lastMessage {
+  color: var(--textSoft);
+  display: block;
+  font-size: 0.85rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
 }
 .lastMsg {
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--textSoft);
-  display: block;
   font-size: 0.85rem;
-  margin-top: 3px;
+  margin-right: 5px;
+}
+.lastTime {
+  font-size: 0.8rem;
 }
 .imageContainer {
   width: 38px;

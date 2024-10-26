@@ -11,7 +11,6 @@
   text-transform: capitalize;
 }
 .connectionStatus {
-  margin-top: 3px;
   font-size: 0.85rem;
   color: var(--textSoft);
 }
@@ -35,6 +34,9 @@
 }
 @media (max-width: 640px) {
   .appName {
+    margin-top: 2px;
+  }
+  .connectionStatus {
     margin-top: 2px;
   }
 }

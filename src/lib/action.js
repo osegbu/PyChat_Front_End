@@ -3,17 +3,9 @@
 import { signIn, auth } from "@/lib/auth";
 import { generateToken } from "./accessToken";
 import { makeApiCall } from "./makeApiCall ";
+import { persistChatInDB } from "@/app/websocket/dbUtils";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-
-const handleSignIn = async (credentials) => {
-  await signIn("credentials", {
-    redirect: false,
-    id: credentials.id,
-    username: credentials.username,
-    profileimage: credentials.profileimage,
-  });
-};
 
 const handleApiCall = async (url, method, body, headers = {}) => {
   try {
@@ -36,12 +28,12 @@ export const signup = async (formData) => {
     });
 
     await signIn("credentials", {
-      redirect: false,
       ...credentials,
     });
-
-    return { success: true, data: credentials };
   } catch (error) {
+    if (error.message.includes("NEXT_REDIRECT")) {
+      throw error;
+    }
     return { success: false, message: `Signup error: ${error.message}` };
   }
 };
@@ -57,12 +49,12 @@ export const login = async (formData) => {
     });
 
     await signIn("credentials", {
-      redirect: false,
       ...credentials,
     });
-
-    return { success: true, data: credentials };
   } catch (error) {
+    if (error.message.includes("NEXT_REDIRECT")) {
+      throw error;
+    }
     return { success: false, message: `Login error: ${error.message}` };
   }
 };
