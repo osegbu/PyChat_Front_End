@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { DetailLoader } from "../detailsComponent/DetailLoader";
 import UserDetailLoader from "../chatcomponent/UserDetailLoader";
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { useHomeContext } from "../homeComponent/HomeComponent";
 
 const ChatComponent = dynamic(() => import("../chatcomponent/ChatComponent"), {
@@ -20,6 +20,22 @@ const DetailsComponent = dynamic(
 const LoadChat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isChatOpen } = useHomeContext();
+
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      if (isOpen) {
+        event.preventDefault();
+        setIsOpen(false);
+        window.history.pushState({ chatOpen: false }, "");
+      }
+    };
+
+    window.addEventListener("popstate", handleBackButton);
+
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [isOpen]);
 
   if (!isChatOpen) return null;
 

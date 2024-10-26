@@ -17,7 +17,7 @@ const UserDetails = ({ openDetails }) => {
     const handleBackButton = (event) => {
       event.preventDefault();
       closeChat();
-      window.history.pushState(null, "", window.location.pathname);
+      window.history.pushState({ chatOpen: false }, "");
     };
 
     window.addEventListener("popstate", handleBackButton);
