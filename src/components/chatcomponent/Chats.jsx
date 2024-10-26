@@ -3,6 +3,7 @@ import { memo, useRef, useEffect } from "react";
 import styles from "./chat.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import sentIcon from "@/icons/sent.png";
 
 const Chats = () => {
   const endRef = useRef();
@@ -129,7 +130,23 @@ const Chats = () => {
                   />
                 )}
                 <div className={styles.chatTime}>
-                  {formatTime(message.timestamp)} {message.status}
+                  {formatTime(message.timestamp)}
+                  {message.status &&
+                    (message.status === "sent" ? (
+                      <Image
+                        src={sentIcon}
+                        height={18}
+                        width={18}
+                        style={{ marginLeft: "5px", marginBottom: "-4px" }}
+                      />
+                    ) : (
+                      <Image
+                        src={sentIcon}
+                        height={18}
+                        width={18}
+                        style={{ marginLeft: "5px", marginBottom: "-4px" }}
+                      />
+                    ))}
                 </div>
               </div>
             ))}

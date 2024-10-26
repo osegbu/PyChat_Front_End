@@ -19,27 +19,28 @@ const DetailsComponent = dynamic(
 
 const LoadChat = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isChatOpen } = useHomeContext();
+  const { isChatOpen, closeChat } = useHomeContext();
+
+  const openDetails = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
     const handleBackButton = (event) => {
+      event.preventDefault();
+
       if (isOpen) {
-        event.preventDefault();
         setIsOpen(false);
-        window.history.pushState({ chatOpen: false }, "");
+      } else {
+        closeChat();
       }
     };
-
     window.addEventListener("popstate", handleBackButton);
 
     return () => {
       window.removeEventListener("popstate", handleBackButton);
     };
-  }, [isOpen]);
+  }, [isOpen, closeChat]);
 
   if (!isChatOpen) return null;
-
-  const openDetails = () => setIsOpen(!isOpen);
 
   return (
     <>

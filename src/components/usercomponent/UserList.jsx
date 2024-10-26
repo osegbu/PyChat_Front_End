@@ -4,6 +4,8 @@ import { memo, useMemo, useCallback } from "react";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
 
+import sentIcon from "@/icons/sent.png";
+
 const User = memo(({ id, username, profileimage, status }) => {
   const { data: session } = useSession();
   const { openChat } = useHomeContext();
@@ -65,7 +67,12 @@ const User = memo(({ id, username, profileimage, status }) => {
               "No messages yet"}
           </div>
           <div className={styles.lastStatus}>
-            {lastMsg?.status && lastMsg?.status}
+            {lastMsg?.status &&
+              (lastMsg?.status === "sent" ? (
+                <Image src={sentIcon} height={18} width={18} />
+              ) : (
+                <Image src={sentIcon} height={18} width={18} />
+              ))}
           </div>
         </div>
       </div>

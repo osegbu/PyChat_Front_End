@@ -13,20 +13,6 @@ const UserDetails = ({ openDetails }) => {
     [userID, Users]
   );
 
-  useEffect(() => {
-    const handleBackButton = (event) => {
-      event.preventDefault();
-      closeChat();
-      window.history.pushState({ chatOpen: false }, "");
-    };
-
-    window.addEventListener("popstate", handleBackButton);
-
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, [closeChat]);
-
   return (
     <div className={styles.chatUserDetails}>
       <Image
