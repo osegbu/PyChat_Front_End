@@ -35,11 +35,15 @@ const LoadChat = () => {
       const currentState = window.history.state?.isOpen;
       if (currentState) {
         setIsOpen(false);
-      } else {
+      }
+      const isChatOPen = window.history.state?.isChatOpen;
+      if (isChatOPen) {
         closeChat();
       }
     };
-    window.history.pushState({ chat: true }, "", window.location.href);
+
+    window.history.pushState({ isChatOpen: !isOpen }, "", window.location.href);
+
     window.addEventListener("popstate", handleBackButton);
 
     return () => {
