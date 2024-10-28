@@ -16,7 +16,7 @@
   border: none;
   border-radius: 4px;
   font-size: 1rem;
-  padding: 8px;
+  padding: 12px;
   margin: 8px 0px;
   margin-bottom: 16px;
   outline: none;
@@ -62,15 +62,16 @@
   .formContainer {
     border-radius: 0px;
     width: 100%;
-    background-color: transparent;
-  }
-  .formContainer input {
-    background-color: rgba(255, 255, 255, 0.1);
   }
   .formTitle {
     background-color: transparent;
-    font-size: 24px;
+    font-size: 20px;
+    padding: 16px;
+    border-bottom: 1px solid #4b4b4b;
     margin-bottom: 16px;
+  }
+  .formContainer input {
+    border: 1px solid #4b4b4b;
   }
   .formContainer button {
     margin-top: 24px;

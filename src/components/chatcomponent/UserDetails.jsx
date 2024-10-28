@@ -5,6 +5,7 @@ import { memo, useMemo, useEffect } from "react";
 import backArrow from "@/icons/arrow.png";
 
 const UserDetails = ({ openDetails }) => {
+  const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
   const { userID, typing } = useChatContext();
   const { Users, closeChat } = useHomeContext();
 
@@ -24,7 +25,7 @@ const UserDetails = ({ openDetails }) => {
         onClick={closeChat}
       />
       <Image
-        src={user.profileimage}
+        src={BASE_URL + user.profileimage}
         width={38}
         height={38}
         alt={`${user.username}'s profile picture`}

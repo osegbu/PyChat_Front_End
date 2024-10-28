@@ -4,13 +4,18 @@ import { useSession } from "next-auth/react";
 import HomeComponent from "@/components/homeComponent/HomeComponent";
 import { fetchUser, fetchChats } from "@/lib/action";
 import { usePathname, useRouter } from "next/navigation";
-import { initDB, persistChatInDB } from "@/app/websocket/dbUtils";
+import {
+  getAllChatsFromDB,
+  initDB,
+  persistChatInDB,
+} from "@/app/websocket/dbUtils";
 
 export default memo(function Start() {
   const { data: sessionData, status } = useSession();
   const [loading, setLoading] = useState(true);
   const [userList, setUserList] = useState([]);
   const [chatsLoaded, setChatsLoaded] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState("Loading...");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -21,15 +26,39 @@ export default memo(function Start() {
   const FetchUsers = useCallback(async () => {
     if (!isFetchingUsers.current) {
       isFetchingUsers.current = true;
-      const users = await fetchUser();
-      if (users.success) {
-        const filteredUsers = users.users.filter(
-          (user) => user.id != sessionData.user.id
-        );
-        setUserList(filteredUsers);
-        hasFetchedUsers.current = true;
-      } else {
-        console.log(users.message);
+
+      try {
+        const allChats = await getAllChatsFromDB();
+
+        const usersResponse = await fetchUser();
+        if (usersResponse.success) {
+          const filteredUsers = usersResponse.users
+            .filter((user) => user.id != sessionData.user.id)
+            .map((user) => {
+              const userChats = allChats.filter(
+                (chat) =>
+                  chat.sender_id === user.id || chat.receiver_id === user.id
+              );
+              userChats.sort(
+                (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+              );
+              const lastChat = userChats[0];
+              return {
+                ...user,
+                lastChatTimestamp: lastChat?.timestamp || null,
+              };
+            })
+            .sort(
+              (a, b) =>
+                new Date(b.lastChatTimestamp) - new Date(a.lastChatTimestamp)
+            );
+          setUserList(filteredUsers);
+          hasFetchedUsers.current = true;
+        } else {
+          console.error(usersResponse.message);
+        }
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
       }
     }
   }, [sessionData]);
@@ -71,17 +100,21 @@ export default memo(function Start() {
   useEffect(() => {
     const fetchData = async () => {
       await FetchChats();
-      await FetchUsers();
+      setLoadingMsg("Fetching Chats...");
+      if (chatsLoaded) {
+        setLoadingMsg("Fetching Users...");
+        await FetchUsers();
+      }
       setLoading(false);
     };
 
     if (status === "authenticated") {
       fetchData();
     }
-  }, [status, FetchUsers, FetchChats]);
+  }, [status, chatsLoaded, FetchUsers, FetchChats]);
 
   if (loading || !chatsLoaded || !hasFetchedUsers.current) {
-    return <div>Loading data...</div>;
+    return <div>{loadingMsg}</div>;
   }
 
   return <HomeComponent userList={userList} />;

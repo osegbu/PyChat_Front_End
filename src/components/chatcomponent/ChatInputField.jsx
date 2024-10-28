@@ -2,10 +2,11 @@ import Image from "next/image";
 import styles from "./chat.module.css";
 import imgIcon from "@/icons/image.png";
 import { useState, useCallback, useRef, useEffect, memo } from "react";
-import { useChatContext } from "../homeComponent/HomeComponent";
+import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
 import debounce from "lodash/debounce";
 import { v4 as uuidv4 } from "uuid";
+import { getAllChatsFromDB } from "@/app/websocket/dbUtils";
 
 const ChatInputField = ({
   receiver_id,
@@ -14,7 +15,8 @@ const ChatInputField = ({
   setIsImageOpen,
 }) => {
   const { data: session } = useSession();
-  const { sendMessage } = useChatContext();
+  const { sendMessage, reOrderUsers } = useChatContext();
+  const { Users } = useHomeContext();
   const [message, setMessage] = useState("");
   const [fileData, setFileData] = useState(null);
   const textareaRef = useRef(null);
@@ -23,6 +25,25 @@ const ChatInputField = ({
   const handleInputChange = useCallback((e) => {
     setMessage(e.target.value);
   }, []);
+
+  const OrderUsers = async () => {
+    const allChats = await getAllChatsFromDB();
+    return Users.filter((user) => user.id != session.user.id)
+      .map((user) => {
+        const userChats = allChats.filter(
+          (chat) => chat.sender_id === user.id || chat.receiver_id === user.id
+        );
+        userChats.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const lastChat = userChats[0];
+        return {
+          ...user,
+          lastChatTimestamp: lastChat?.timestamp || null,
+        };
+      })
+      .sort(
+        (a, b) => new Date(b.lastChatTimestamp) - new Date(a.lastChatTimestamp)
+      );
+  };
 
   const handleSendMessage = useCallback(async () => {
     if (!message.trim() && !fileData) return;
@@ -73,6 +94,9 @@ const ChatInputField = ({
       sendMessage({ jsonMessage });
       setMessage("");
     }
+
+    const userList = await OrderUsers();
+    reOrderUsers(userList);
   }, [
     message,
     fileData,

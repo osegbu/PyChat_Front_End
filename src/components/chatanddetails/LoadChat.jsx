@@ -21,24 +21,31 @@ const LoadChat = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isChatOpen, closeChat } = useHomeContext();
 
-  const openDetails = () => setIsOpen((prev) => !prev);
+  const openDetails = () => {
+    setIsOpen((prev) => {
+      const newIsOpen = !prev;
+      window.history.pushState({ isOpen: newIsOpen }, "", window.location.href);
+      return newIsOpen;
+    });
+  };
 
   useEffect(() => {
     const handleBackButton = (event) => {
       event.preventDefault();
-
-      if (isOpen) {
+      const currentState = window.history.state?.isOpen;
+      if (currentState) {
         setIsOpen(false);
       } else {
         closeChat();
       }
     };
+    window.history.pushState({ chat: true }, "", window.location.href);
     window.addEventListener("popstate", handleBackButton);
 
     return () => {
       window.removeEventListener("popstate", handleBackButton);
     };
-  }, [isOpen, closeChat]);
+  }, [closeChat]);
 
   if (!isChatOpen) return null;
 

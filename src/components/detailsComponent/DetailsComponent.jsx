@@ -10,6 +10,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
   const { userID, messages } = useChatContext();
   const { Users } = useHomeContext();
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  const BASE_URL_IMG = process.env.NEXT_PUBLIC_IMAGE;
 
   const user = useMemo(() => {
     return Users.find((user) => user.id === userID);
@@ -42,7 +43,7 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
       <div className={styles.userDetails}>
         <div className={styles.profileImage}>
           <Image
-            src={user.profileimage}
+            src={BASE_URL_IMG + user.profileimage}
             alt={`Profile picture of ${user.username}`}
             width={150}
             height={150}

@@ -4,6 +4,7 @@ import styles from "./chat.module.css";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import sentIcon from "@/icons/sent.png";
+import notSent from "@/icons/time.png";
 
 const Chats = () => {
   const endRef = useRef();
@@ -53,9 +54,9 @@ const Chats = () => {
       return dayOfWeek[messageDate.getDay()];
     } else {
       return messageDate.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        year: "2-digit",
       });
     }
   };
@@ -135,16 +136,18 @@ const Chats = () => {
                     (message.status === "sent" ? (
                       <Image
                         src={sentIcon}
-                        height={18}
-                        width={18}
-                        style={{ marginLeft: "5px", marginBottom: "-4px" }}
+                        alt="Sent"
+                        height={16}
+                        width={16}
+                        style={{ marginLeft: "5px", marginBottom: "-2px" }}
                       />
                     ) : (
                       <Image
-                        src={sentIcon}
-                        height={18}
-                        width={18}
-                        style={{ marginLeft: "5px", marginBottom: "-4px" }}
+                        src={notSent}
+                        alt="Not sent"
+                        height={16}
+                        width={16}
+                        style={{ marginLeft: "5px", marginBottom: "-2px" }}
                       />
                     ))}
                 </div>

@@ -26,14 +26,11 @@ const initialState = {
   typing: {},
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "UPDATE_USER_LIST":
       const userList = action.users.map((user) => ({
         ...user,
-        profileimage: `${BASE_URL}/${user.profileimage}`,
       }));
       return { ...state, Users: userList, fullUserList: userList };
 
@@ -84,6 +81,10 @@ const HomeComponent = ({ userList }) => {
     });
   }, []);
 
+  const reOrderUsers = useCallback((userList) => {
+    dispatch({ type: "UPDATE_USER_LIST", users: userList });
+  }, []);
+
   const { connect, sendMessage, messages, connectionStatus, updateMessages } =
     useWebSocket(onStatusUpdate, onTyping);
 
@@ -122,8 +123,9 @@ const HomeComponent = ({ userList }) => {
       sendMessage,
       messages,
       typing: state.typing,
+      reOrderUsers,
     }),
-    [state.userID, sendMessage, messages, state.typing]
+    [state.userID, sendMessage, messages, state.typing, reOrderUsers]
   );
   return (
     <HomeContext.Provider value={homeContextValue}>

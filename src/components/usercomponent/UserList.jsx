@@ -5,8 +5,11 @@ import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
 
 import sentIcon from "@/icons/sent.png";
+import notSent from "@/icons/clock.png";
 
 const User = memo(({ id, username, profileimage, status }) => {
+  const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
+
   const { data: session } = useSession();
   const { openChat } = useHomeContext();
   const { messages } = useChatContext();
@@ -27,11 +30,29 @@ const User = memo(({ id, username, profileimage, status }) => {
   }, [openChat, id]);
 
   const formatTime = (timestamp) => {
-    return new Date(timestamp).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+    const date = new Date(timestamp);
+    const now = new Date();
+
+    const isToday = date.toDateString() === now.toDateString();
+    const isYesterday =
+      new Date(now.setDate(now.getDate() - 1)).toDateString() ===
+      date.toDateString();
+
+    if (isToday) {
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } else if (isYesterday) {
+      return "Yesterday";
+    } else {
+      return date.toLocaleDateString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "2-digit",
+      });
+    }
   };
 
   return (
@@ -45,7 +66,7 @@ const User = memo(({ id, username, profileimage, status }) => {
           }
         ></div>
         <Image
-          src={profileimage}
+          src={BASE_URL + profileimage}
           width={38}
           height={38}
           alt={`Profile picture of ${username}`}
@@ -69,9 +90,21 @@ const User = memo(({ id, username, profileimage, status }) => {
           <div className={styles.lastStatus}>
             {lastMsg?.status &&
               (lastMsg?.status === "sent" ? (
-                <Image src={sentIcon} height={18} width={18} />
+                <Image
+                  src={sentIcon}
+                  alt="Sent"
+                  height={16}
+                  width={16}
+                  style={{ marginBottom: "-2px" }}
+                />
               ) : (
-                <Image src={sentIcon} height={18} width={18} />
+                <Image
+                  src={notSent}
+                  alt="Not sent"
+                  height={16}
+                  width={16}
+                  style={{ marginBottom: "-2px" }}
+                />
               ))}
           </div>
         </div>
