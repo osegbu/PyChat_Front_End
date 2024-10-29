@@ -5,10 +5,10 @@ import backArrow from "@/icons/arrow.png";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
 
-const DetailsComponent = ({ isOpen, openDetails }) => {
+const DetailsComponent = () => {
   const { data: session } = useSession();
   const { userID, messages } = useChatContext();
-  const { Users } = useHomeContext();
+  const { Users, closeDetails, isDetailsOpen } = useHomeContext();
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const BASE_URL_IMG = process.env.NEXT_PUBLIC_IMAGE;
 
@@ -31,14 +31,14 @@ const DetailsComponent = ({ isOpen, openDetails }) => {
   );
 
   return (
-    <div className={`${isOpen && styles.active} ${styles.container}`}>
+    <div className={`${isDetailsOpen && styles.active} ${styles.container}`}>
       <Image
         className={styles.backBtn}
         src={backArrow}
         alt="Back button"
         height={24}
         width={24}
-        onClick={() => openDetails()}
+        onClick={() => closeDetails()}
       />
       <div className={styles.userDetails}>
         <div className={styles.profileImage}>

@@ -2,15 +2,16 @@ import { memo, useState, useCallback } from "react";
 import styles from "./chat.module.css";
 import ChatInputField from "./ChatInputField";
 import UserDetails from "./UserDetails";
-import { useChatContext } from "../homeComponent/HomeComponent";
+import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import Image from "next/image";
 import cancel from "@/icons/x-button.png";
 import Chats from "./Chats";
 
-const ChatComponent = ({ isOpen, openDetails }) => {
+const ChatComponent = () => {
   const [isImageOpen, setIsImageOpen] = useState(false);
   const [imagePreviewSrc, setImagePreviewSrc] = useState("");
   const { userID } = useChatContext();
+  const { isDetailsOpen } = useHomeContext();
 
   const selectImage = useCallback((fileData) => {
     if (fileData) {
@@ -24,8 +25,8 @@ const ChatComponent = ({ isOpen, openDetails }) => {
   }, []);
 
   return (
-    <div className={`${isOpen && styles.collapse} ${styles.container}`}>
-      <UserDetails openDetails={openDetails} />
+    <div className={`${isDetailsOpen && styles.collapse} ${styles.container}`}>
+      <UserDetails />
       <Chats />
 
       {isImageOpen && (

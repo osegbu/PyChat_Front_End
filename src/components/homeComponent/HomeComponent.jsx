@@ -8,6 +8,7 @@ import {
   useCallback,
   useEffect,
   memo,
+  useState,
 } from "react";
 import UserComponent from "../usercomponent/UserComponent";
 import useWebSocket from "@/app/websocket/Websocket";
@@ -65,6 +66,8 @@ const reducer = (state, action) => {
 
 const HomeComponent = ({ userList }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
   const onStatusUpdate = useCallback((message) => {
     dispatch({
       type: "UPDATE_USER_STATUS",
@@ -94,6 +97,19 @@ const HomeComponent = ({ userList }) => {
     connect();
   }, []);
 
+  const openDetails = useCallback(() => {
+    setIsDetailsOpen(true);
+    window.history.replaceState(
+      { isDetailsOpen: true, isChatOpen: state.isChatOpen },
+      "",
+      window.location.href
+    );
+  }, [state.isChatOpen]);
+
+  const closeDetails = useCallback(() => {
+    setIsDetailsOpen(false);
+  }, []);
+
   const openChat = useCallback((id) => {
     dispatch({ type: "CHAT_OPEN", id });
   }, []);
@@ -110,11 +126,23 @@ const HomeComponent = ({ userList }) => {
     () => ({
       openChat,
       closeChat,
+      openDetails,
+      closeDetails,
+      isDetailsOpen,
       search,
       isChatOpen: state.isChatOpen,
       Users: state.Users,
     }),
-    [openChat, closeChat, search, state.isChatOpen, state.Users]
+    [
+      openChat,
+      closeChat,
+      openDetails,
+      closeDetails,
+      isDetailsOpen,
+      search,
+      state.isChatOpen,
+      state.Users,
+    ]
   );
 
   const chatContextValue = useMemo(
@@ -127,6 +155,22 @@ const HomeComponent = ({ userList }) => {
     }),
     [state.userID, sendMessage, messages, state.typing, reOrderUsers]
   );
+
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      if (isDetailsOpen) {
+        setIsDetailsOpen(false);
+      } else {
+        closeChat();
+      }
+    };
+
+    window.addEventListener("popstate", handleBackButton);
+    return () => {
+      window.removeEventListener("popstate", handleBackButton);
+    };
+  }, [isDetailsOpen, setIsDetailsOpen, closeChat]);
+
   return (
     <HomeContext.Provider value={homeContextValue}>
       <ChatContext.Provider value={chatContextValue}>

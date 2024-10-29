@@ -4,10 +4,10 @@ import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { memo, useMemo, useEffect } from "react";
 import backArrow from "@/icons/arrow.png";
 
-const UserDetails = ({ openDetails }) => {
+const UserDetails = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
   const { userID, typing } = useChatContext();
-  const { Users, closeChat } = useHomeContext();
+  const { Users, closeChat, openDetails } = useHomeContext();
 
   const user = useMemo(
     () => Users.find((user) => user.id === userID),
