@@ -1,7 +1,7 @@
 import styles from "./chat.module.css";
 import Image from "next/image";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
-import { memo, useMemo, useEffect } from "react";
+import { memo, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 
 const UserDetails = () => {

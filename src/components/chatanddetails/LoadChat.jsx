@@ -1,21 +1,7 @@
-import dynamic from "next/dynamic";
-import { DetailLoader } from "../detailsComponent/DetailLoader";
-import UserDetailLoader from "../chatcomponent/UserDetailLoader";
-import { memo, useState, useEffect } from "react";
+import { memo } from "react";
 import { useHomeContext } from "../homeComponent/HomeComponent";
-
-const ChatComponent = dynamic(() => import("../chatcomponent/ChatComponent"), {
-  ssr: false,
-  loading: () => <UserDetailLoader />,
-});
-
-const DetailsComponent = dynamic(
-  () => import("../detailsComponent/DetailsComponent"),
-  {
-    ssr: false,
-    loading: () => <DetailLoader />,
-  }
-);
+import ChatComponent from "../chatcomponent/ChatComponent";
+import DetailsComponent from "../detailsComponent/DetailsComponent";
 
 const LoadChat = () => {
   const { isChatOpen } = useHomeContext();

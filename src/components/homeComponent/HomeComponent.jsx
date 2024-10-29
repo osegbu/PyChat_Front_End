@@ -12,6 +12,7 @@ import {
 } from "react";
 import UserComponent from "../usercomponent/UserComponent";
 import useWebSocket from "@/app/websocket/Websocket";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const HomeContext = createContext();
 const ChatContext = createContext();
@@ -65,6 +66,9 @@ const reducer = (state, action) => {
 };
 
 const HomeComponent = ({ userList }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
@@ -99,23 +103,54 @@ const HomeComponent = ({ userList }) => {
 
   const openDetails = useCallback(() => {
     setIsDetailsOpen(true);
-    window.history.replaceState(
-      { isDetailsOpen: true, isChatOpen: state.isChatOpen },
-      "",
-      window.location.href
-    );
-  }, [state.isChatOpen]);
+    const currentSearchParams = new URLSearchParams(window.location.search);
+    const chatOpen = currentSearchParams.get("details") === "open";
+    if (!chatOpen) {
+      const newUrl = "?details=open";
+      window.history.pushState(
+        { ...window.history.state, as: newUrl, url: newUrl },
+        "",
+        newUrl
+      );
+    }
+  }, []);
 
   const closeDetails = useCallback(() => {
     setIsDetailsOpen(false);
-  }, []);
+    const newUrl = state.isChatOpen ? "?chat=open" : "";
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      "",
+      newUrl
+    );
+  }, [state.isChatOpen]);
 
-  const openChat = useCallback((id) => {
-    dispatch({ type: "CHAT_OPEN", id });
-  }, []);
+  const openChat = useCallback(
+    (id) => {
+      const currentSearchParams = new URLSearchParams(window.location.search);
+      const chatOpen = currentSearchParams.get("chat") === "open";
+
+      dispatch({ type: "CHAT_OPEN", id });
+      if (!chatOpen) {
+        const newUrl = "?chat=open";
+        window.history.pushState(
+          { ...window.history.state, as: newUrl, url: newUrl },
+          "",
+          newUrl
+        );
+      }
+    },
+    [dispatch]
+  );
 
   const closeChat = useCallback(() => {
     dispatch({ type: "CHAT_CLOSE" });
+    const newUrl = "";
+    window.history.replaceState(
+      { ...window.history.state, as: newUrl, url: newUrl },
+      "",
+      newUrl
+    );
   }, []);
 
   const search = useCallback((value) => {
@@ -158,18 +193,20 @@ const HomeComponent = ({ userList }) => {
 
   useEffect(() => {
     const handleBackButton = (event) => {
+      event.preventDefault();
       if (isDetailsOpen) {
         setIsDetailsOpen(false);
-      } else {
+      } else if (state.isChatOpen) {
         closeChat();
       }
     };
 
     window.addEventListener("popstate", handleBackButton);
+
     return () => {
       window.removeEventListener("popstate", handleBackButton);
     };
-  }, [isDetailsOpen, setIsDetailsOpen, closeChat]);
+  }, [isDetailsOpen, state.isChatOpen, closeChat]);
 
   return (
     <HomeContext.Provider value={homeContextValue}>

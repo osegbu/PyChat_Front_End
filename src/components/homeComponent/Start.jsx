@@ -26,7 +26,7 @@ export default memo(function Start() {
   const FetchUsers = useCallback(async () => {
     if (!isFetchingUsers.current) {
       isFetchingUsers.current = true;
-
+      console.log("Fetching...");
       try {
         const allChats = await getAllChatsFromDB();
 
@@ -112,25 +112,6 @@ export default memo(function Start() {
       fetchData();
     }
   }, [status, chatsLoaded, FetchUsers, FetchChats]);
-
-  useEffect(() => {
-    window.history.pushState(null, "", window.location.href);
-    console.log(window.history);
-
-    const handleBackButton = (event) => {
-      event.preventDefault();
-      window.history.replaceState(null, "", window.location.href);
-      console.log("Back Clicked");
-      console.log(window.history);
-      return false;
-    };
-
-    window.addEventListener("popstate", handleBackButton);
-    return () => {
-      window.removeEventListener("popstate", handleBackButton);
-    };
-  }, []);
-
   if (loading || !chatsLoaded || !hasFetchedUsers.current) {
     return <div>{loadingMsg}</div>;
   }
