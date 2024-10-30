@@ -211,4 +211,7 @@
   .lastMessage {
     margin-top: 4px;
   }
+  .unread {
+    line-height: 20px;
+  }
 }

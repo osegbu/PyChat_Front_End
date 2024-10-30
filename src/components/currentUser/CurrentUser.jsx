@@ -26,10 +26,10 @@ const CurrentUser = () => {
     <div className={styles.container}>
       <div className={styles.profileImage}>
         <Image
-          src={BASE_URL + "/" + session?.user?.profileimage}
+          src={BASE_URL + "/" + session.user.profileimage}
           width={38}
           height={38}
-          alt={`Profile picture of ${session?.user?.username}`}
+          alt={`Profile picture of ${session.user.username}`}
         />
       </div>
       <div className={styles.appName}>

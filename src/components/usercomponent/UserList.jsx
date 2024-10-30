@@ -18,12 +18,11 @@ const User = memo(({ id, username, profileimage, unread, status }) => {
     return messages
       .filter(
         (message) =>
-          (message.sender_id == session?.user?.id &&
-            message.receiver_id == id) ||
-          (message.receiver_id == session?.user?.id && message.sender_id == id)
+          (message.sender_id == session.user.id && message.receiver_id == id) ||
+          (message.receiver_id == session.user.id && message.sender_id == id)
       )
       .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
-  }, [messages, session?.user?.id, id]);
+  }, [messages, id]);
 
   const handleUserClick = useCallback(() => {
     openChat(id);
@@ -78,18 +77,16 @@ const User = memo(({ id, username, profileimage, unread, status }) => {
             <b>{username}</b>
           </div>
           <div className={styles.lastTime}>
-            {lastMsg?.timestamp && formatTime(lastMsg?.timestamp)}
+            {lastMsg.timestamp && formatTime(lastMsg.timestamp)}
           </div>
         </div>
         <div className={styles.lastMessage}>
           <div className={styles.lastMsg}>
-            {lastMsg?.message ||
-              (lastMsg?.image && "Photo") ||
-              "No messages yet"}
+            {lastMsg.message || (lastMsg.image && "Photo") || "No messages yet"}
           </div>
           <div className={styles.lastStatus}>
-            {lastMsg?.status &&
-              (lastMsg?.status === "sent" ? (
+            {lastMsg.status &&
+              (lastMsg.status === "sent" ? (
                 <Image
                   src={sentIcon}
                   alt="Sent"
