@@ -69,6 +69,7 @@ const HomeComponent = ({ userList }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [reOrder, setReOrder] = useState(false);
+  const sound = new Audio("/notification.mp3");
 
   const reOrderNow = () => {
     setReOrder(true);
@@ -194,10 +195,11 @@ const HomeComponent = ({ userList }) => {
 
   useEffect(() => {
     fetchAndSortUsers(userList);
-  }, [reOrder, userList]);
+  }, [reOrder]);
 
   useEffect(() => {
     if (recent) {
+      sound.play();
       const newList = unRead(recent.sender_id);
       fetchAndSortUsers(newList);
     }

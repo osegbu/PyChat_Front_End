@@ -77,16 +77,18 @@ const User = memo(({ id, username, profileimage, unread, status }) => {
             <b>{username}</b>
           </div>
           <div className={styles.lastTime}>
-            {lastMsg.timestamp && formatTime(lastMsg.timestamp)}
+            {lastMsg?.timestamp && formatTime(lastMsg?.timestamp)}
           </div>
         </div>
         <div className={styles.lastMessage}>
           <div className={styles.lastMsg}>
-            {lastMsg.message || (lastMsg.image && "Photo") || "No messages yet"}
+            {lastMsg?.message ||
+              (lastMsg?.image && "Photo") ||
+              "No messages yet"}
           </div>
           <div className={styles.lastStatus}>
-            {lastMsg.status &&
-              (lastMsg.status === "sent" ? (
+            {lastMsg?.status &&
+              (lastMsg?.status === "sent" ? (
                 <Image
                   src={sentIcon}
                   alt="Sent"

@@ -209,9 +209,10 @@
 
 @media (max-width: 420px) {
   .lastMessage {
-    margin-top: 4px;
+    margin-top: 5px;
   }
   .unread {
     line-height: 20px;
+    margin-top: -2px;
   }
 }
