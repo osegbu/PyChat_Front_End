@@ -5,6 +5,7 @@ import HomeComponent from "@/components/homeComponent/HomeComponent";
 import { fetchUser, fetchChats } from "@/lib/action";
 import { usePathname, useRouter } from "next/navigation";
 import { initDB, persistChatInDB } from "@/app/websocket/dbUtils";
+import Cookies from "js-cookie";
 
 export default memo(function Start() {
   const { data: sessionData, status } = useSession();
@@ -34,6 +35,14 @@ export default memo(function Start() {
         } else {
           console.error(usersResponse.message);
         }
+
+        const { user } = sessionData;
+        const cookieData = {
+          id: user.id,
+          username: user.username,
+          profileimage: user.profileimage,
+        };
+        Cookies.set("sessionData", JSON.stringify(cookieData));
       } catch (error) {
         console.error("Failed to fetch users:", error);
       }
@@ -89,6 +98,7 @@ export default memo(function Start() {
       fetchData();
     }
   }, [status, chatsLoaded, FetchUsers, FetchChats]);
+
   if (loading || !chatsLoaded || !hasFetchedUsers.current) {
     return <div>{loadingMsg}</div>;
   }

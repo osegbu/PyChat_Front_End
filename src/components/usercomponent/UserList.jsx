@@ -2,7 +2,7 @@ import styles from "./user.module.css";
 import Image from "next/image";
 import { memo, useMemo, useCallback } from "react";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
-import { useSession } from "next-auth/react";
+import Cookies from "js-cookie";
 
 import sentIcon from "@/icons/sent.png";
 import notSent from "@/icons/clock.png";
@@ -10,7 +10,7 @@ import notSent from "@/icons/clock.png";
 const User = memo(({ id, username, profileimage, unread, status }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
 
-  const { data: session } = useSession();
+  const session = JSON.parse(Cookies.get("sessionData"));
   const { openChat } = useHomeContext();
   const { messages } = useChatContext();
 
@@ -18,8 +18,8 @@ const User = memo(({ id, username, profileimage, unread, status }) => {
     return messages
       .filter(
         (message) =>
-          (message.sender_id == session.user.id && message.receiver_id == id) ||
-          (message.receiver_id == session.user.id && message.sender_id == id)
+          (message.sender_id == session.id && message.receiver_id == id) ||
+          (message.receiver_id == session.id && message.sender_id == id)
       )
       .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
   }, [messages, id]);

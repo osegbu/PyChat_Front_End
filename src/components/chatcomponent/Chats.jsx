@@ -2,13 +2,13 @@ import { useChatContext } from "../homeComponent/HomeComponent";
 import { memo, useRef, useEffect } from "react";
 import styles from "./chat.module.css";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import sentIcon from "@/icons/sent.png";
 import notSent from "@/icons/time.png";
+import Cookies from "js-cookie";
 
 const Chats = () => {
   const endRef = useRef();
-  const { data: session } = useSession();
+  const session = JSON.parse(Cookies.get("sessionData"));
   const { userID, messages } = useChatContext();
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -64,9 +64,8 @@ const Chats = () => {
   const filteredChat = messages
     .filter(
       (message) =>
-        (message.sender_id == session.user.id &&
-          message.receiver_id == userID) ||
-        (message.receiver_id == session.user.id && message.sender_id == userID)
+        (message.sender_id == session.id && message.receiver_id == userID) ||
+        (message.receiver_id == session.id && message.sender_id == userID)
     )
     .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
@@ -98,7 +97,7 @@ const Chats = () => {
             {messages.map((message) => (
               <div
                 className={
-                  message.sender_id == session.user.id
+                  message.sender_id == session.id
                     ? styles.senderChat
                     : styles.receiverChat
                 }

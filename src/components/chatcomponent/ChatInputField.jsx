@@ -6,7 +6,7 @@ import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
 import { useSession } from "next-auth/react";
 import debounce from "lodash/debounce";
 import { v4 as uuidv4 } from "uuid";
-import { getAllChatsFromDB } from "@/app/websocket/dbUtils";
+import Cookies from "js-cookie";
 
 const ChatInputField = ({
   receiver_id,
@@ -14,7 +14,7 @@ const ChatInputField = ({
   isImageOpen,
   setIsImageOpen,
 }) => {
-  const { data: session } = useSession();
+  const session = JSON.parse(Cookies.get("sessionData"));
   const { sendMessage, reOrderNow } = useChatContext();
   const [message, setMessage] = useState("");
   const [fileData, setFileData] = useState(null);
@@ -40,7 +40,7 @@ const ChatInputField = ({
           type: "chat",
           uuid,
           message,
-          sender_id: session.user.id,
+          sender_id: session.id,
           receiver_id,
           timestamp,
           status: "sending...",
@@ -64,7 +64,7 @@ const ChatInputField = ({
         type: "chat",
         uuid,
         message: message.trimStart().trimEnd(),
-        sender_id: session.user.id,
+        sender_id: session.id,
         receiver_id,
         timestamp,
         status: "sending...",
@@ -74,35 +74,28 @@ const ChatInputField = ({
       setMessage("");
     }
     reOrderNow();
-  }, [
-    message,
-    fileData,
-    session.user.id,
-    receiver_id,
-    setIsImageOpen,
-    sendMessage,
-  ]);
+  }, [message, fileData, session.id, receiver_id, setIsImageOpen, sendMessage]);
 
   const handleTyping = useCallback(
     debounce(() => {
       const jsonMessage = JSON.stringify({
         type: "typing",
-        sender_id: session?.user?.id,
+        sender_id: session.id,
         receiver_id,
       });
       sendMessage({ jsonMessage });
     }, 300),
-    [session?.user?.id, receiver_id, sendMessage]
+    [session.id, receiver_id, sendMessage]
   );
 
   const handleBlur = useCallback(() => {
     const jsonMessage = JSON.stringify({
       type: "blur",
-      sender_id: session?.user?.id,
+      sender_id: session.id,
       receiver_id,
     });
     sendMessage({ jsonMessage });
-  }, [session?.user?.id, receiver_id, sendMessage]);
+  }, [session.id, receiver_id, sendMessage]);
 
   const handleImageUpload = useCallback(() => {
     const data = file.current.files[0];

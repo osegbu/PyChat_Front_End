@@ -2,14 +2,15 @@ import Image from "next/image";
 import { useCallback, memo, useState, useEffect } from "react";
 import styles from "./user.module.css";
 import logoutIcon from "@/icons/logout.png";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { handleLogout } from "@/lib/action";
 import { useConnectionContext } from "../homeComponent/HomeComponent";
 import { deleteDatabase } from "@/app/websocket/dbUtils";
+import Cookies from "js-cookie";
 
 const CurrentUser = () => {
   const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
-  const { data: session } = useSession();
+  const session = JSON.parse(Cookies.get("sessionData"));
   const { connectionStatus } = useConnectionContext();
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -26,15 +27,15 @@ const CurrentUser = () => {
     <div className={styles.container}>
       <div className={styles.profileImage}>
         <Image
-          src={BASE_URL + "/" + session.user.profileimage}
+          src={BASE_URL + "/" + session.profileimage}
           width={38}
           height={38}
-          alt={`Profile picture of ${session.user.username}`}
+          alt={`Profile picture of ${session.username}`}
         />
       </div>
       <div className={styles.appName}>
         <div>
-          <b>{session?.user?.username}</b>
+          <b>{session.username}</b>
         </div>
         <div className={styles.connectionStatus}>
           {loggingOut ? "Logging out..." : connectionStatus}

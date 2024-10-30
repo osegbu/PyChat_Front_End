@@ -9,7 +9,7 @@ export const startHeartbeat = (
   return setInterval(() => {
     if (socketRef.current) {
       socketRef.current.send(
-        JSON.stringify({ type: "ping", user_id: session?.user?.id })
+        JSON.stringify({ type: "ping", user_id: session.id })
       );
 
       missedPingCountRef.current += 1;

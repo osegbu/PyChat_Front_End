@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRef, useState, useCallback, useEffect } from "react";
 import {
   startHeartbeat,
@@ -8,11 +7,12 @@ import {
   handleReconnect,
 } from "./connectionUtils";
 import { persistChatInDB, updateChatInDB, getAllChatsFromDB } from "./dbUtils";
+import Cookies from "js-cookie";
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL;
 
 const useWebSocket = (onStatusUpdate, onTyping) => {
-  const { data: session } = useSession();
+  const session = JSON.parse(Cookies.get("sessionData"));
   const [messages, setMessages] = useState([]);
   const [recent, setRecent] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState("Disconnected");
@@ -93,7 +93,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
         );
 
         newChats.forEach((chat) => {
-          if (chat.sender_id === session.user.id && chat.status !== "sent") {
+          if (chat.sender_id === session.id && chat.status !== "sent") {
             setMessageQueue((prevQueue) => [
               ...prevQueue,
               JSON.stringify(chat),
@@ -116,7 +116,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       return;
     }
 
-    if (!session || !session.user) {
+    if (!session) {
       console.warn(
         "User session is not available. Cannot connect to WebSocket."
       );
@@ -128,7 +128,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
     }
 
     setConnectionStatus("Connecting...");
-    const socket = new WebSocket(`ws://${WS_URL}/ws/${session.user.id}`);
+    const socket = new WebSocket(`ws://${WS_URL}/ws/${session.id}`);
     socketRef.current = socket;
 
     socket.onopen = () => {
@@ -159,7 +159,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
           JSON.stringify({
             type: "ack",
             message_id: message.message_id,
-            receiver_id: session.user.id,
+            receiver_id: session.id,
           })
         );
       }
@@ -217,7 +217,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
 
       handleReconnect(socketRef, reconnectIntervalRef, connect);
     };
-  }, [session, onStatusUpdate, onTyping]);
+  }, [onStatusUpdate, onTyping]);
 
   useEffect(() => {
     const handleOnline = () => {

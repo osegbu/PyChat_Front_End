@@ -3,10 +3,10 @@ import styles from "./details.module.css";
 import { memo, useMemo } from "react";
 import backArrow from "@/icons/arrow.png";
 import { useChatContext, useHomeContext } from "../homeComponent/HomeComponent";
-import { useSession } from "next-auth/react";
+import Cookies from "js-cookie";
 
 const DetailsComponent = () => {
-  const { data: session } = useSession();
+  const session = JSON.parse(Cookies.get("sessionData"));
   const { userID, messages } = useChatContext();
   const { Users, closeDetails, isDetailsOpen } = useHomeContext();
   const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -22,10 +22,10 @@ const DetailsComponent = () => {
 
   const filteredChat = messages.filter(
     (message) =>
-      (message.sender_id == session.user.id &&
+      (message.sender_id == session.id &&
         message.receiver_id == userID &&
         message.image) ||
-      (message.receiver_id == session.user.id &&
+      (message.receiver_id == session.id &&
         message.sender_id == userID &&
         message.image)
   );
