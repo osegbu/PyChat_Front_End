@@ -14,6 +14,7 @@ const WS_URL = process.env.NEXT_PUBLIC_WS_URL;
 const useWebSocket = (onStatusUpdate, onTyping) => {
   const { data: session } = useSession();
   const [messages, setMessages] = useState([]);
+  const [recent, setRecent] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState("Disconnected");
   const socketRef = useRef(null);
   const reconnectIntervalRef = useRef(null);
@@ -108,7 +109,9 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
   }, []);
 
   const connect = useCallback(() => {
-    if (!navigator.onLine) {
+    const isOnline = typeof navigator !== "undefined" && navigator.onLine;
+
+    if (!isOnline) {
       console.warn("No internet connection. Will retry when online.");
       return;
     }
@@ -164,6 +167,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
       if (message.type === "chat") {
         setMessages((prevMessages) => {
           const check = prevMessages.find((chat) => chat.uuid === message.uuid);
+          setRecent(message);
           if (!check) {
             persistChatInDB(message);
             return [...prevMessages, message];
@@ -239,6 +243,7 @@ const useWebSocket = (onStatusUpdate, onTyping) => {
     sendMessage,
     updateMessages,
     messages,
+    recent,
     connectionStatus,
   };
 };

@@ -147,14 +147,12 @@
   height: 12px;
   border-radius: 8px;
 }
-
 .aboutLoader {
   margin-top: 11px;
   width: 300px;
   max-width: 100%;
   flex: 1;
 }
-
 .imageLoader::before,
 .aboutLoader::before,
 .userNameLoader::before {
@@ -183,6 +181,15 @@
   100% {
     left: 150%;
   }
+}
+.unread {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #134d37;
+  text-align: center;
+  line-height: 18px;
+  font-size: 13px;
 }
 @media (max-width: 767px) {
   .container {

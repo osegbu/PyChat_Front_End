@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import sentIcon from "@/icons/sent.png";
 import notSent from "@/icons/clock.png";
 
-const User = memo(({ id, username, profileimage, status }) => {
+const User = memo(({ id, username, profileimage, unread, status }) => {
   const BASE_URL = process.env.NEXT_PUBLIC_IMAGE;
 
   const { data: session } = useSession();
@@ -106,6 +106,7 @@ const User = memo(({ id, username, profileimage, status }) => {
                   style={{ marginBottom: "-2px" }}
                 />
               ))}
+            {unread && <div className={styles.unread}>{unread}</div>}
           </div>
         </div>
       </div>

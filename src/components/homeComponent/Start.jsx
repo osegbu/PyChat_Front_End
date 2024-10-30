@@ -4,11 +4,7 @@ import { useSession } from "next-auth/react";
 import HomeComponent from "@/components/homeComponent/HomeComponent";
 import { fetchUser, fetchChats } from "@/lib/action";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  getAllChatsFromDB,
-  initDB,
-  persistChatInDB,
-} from "@/app/websocket/dbUtils";
+import { initDB, persistChatInDB } from "@/app/websocket/dbUtils";
 
 export default memo(function Start() {
   const { data: sessionData, status } = useSession();
@@ -28,30 +24,11 @@ export default memo(function Start() {
       isFetchingUsers.current = true;
       console.log("Fetching...");
       try {
-        const allChats = await getAllChatsFromDB();
-
         const usersResponse = await fetchUser();
         if (usersResponse.success) {
-          const filteredUsers = usersResponse.users
-            .filter((user) => user.id != sessionData.user.id)
-            .map((user) => {
-              const userChats = allChats.filter(
-                (chat) =>
-                  chat.sender_id === user.id || chat.receiver_id === user.id
-              );
-              userChats.sort(
-                (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-              );
-              const lastChat = userChats[0];
-              return {
-                ...user,
-                lastChatTimestamp: lastChat?.timestamp || null,
-              };
-            })
-            .sort(
-              (a, b) =>
-                new Date(b.lastChatTimestamp) - new Date(a.lastChatTimestamp)
-            );
+          const filteredUsers = usersResponse.users.filter(
+            (user) => user.id != sessionData.user.id
+          );
           setUserList(filteredUsers);
           hasFetchedUsers.current = true;
         } else {
